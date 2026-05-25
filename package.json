@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "test",
-    "start": "node --watch --env-file=.env index.js"
+    "start": "node --watch --env-file=.env src/index.js"
   },
   "author": "Lalit Sharma",
   "license": "ISC",
