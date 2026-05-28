@@ -1,7 +1,6 @@
 import express from "express";
 import connectDB from "./db/dbConnection.js";
-
-const app = express();
+import {app} from "./app.js";
 
 connectDB()
             .then(() => {
@@ -12,6 +11,5 @@ connectDB()
             .catch((error) => {
                 console.error(error);
             });
-
 
 
