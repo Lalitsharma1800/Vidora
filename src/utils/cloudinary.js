@@ -3,21 +3,39 @@ import fs from "fs";
 
 
 cloudinary.config({
-    cloud_name:process.env.cloud_name,
-    api_key:process.env.api_key,
-    api_secret:process.env.api_secret
+    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret:process.env.CLOUDINARY_CLOUD_API_SECRET
 });
 
 const uploadOnCloudinary = async (localFilePath) => {
         try{
-            if(!localFilePath) return null;
-            
+            if(!localFilePath) throw new Error("file not found");
             const response = await cloudinary.uploader.upload(localFilePath, {resource_type: "auto"});
-            fs.unlinkSync(localFilePath);
+            fs.unlinkSync(localFilePath, (err) => {
+                                                if(err){
+                                                    console.log("fn unlink failed => Error:");
+                                                    console.log(err);
+                                                }else{
+                                                    console.log(`file deleted path: ${localFilePath}`);
+                                                }
+                                                
+                                            }
+                            );
             return response;
         }
         catch(error){
-            fs.unlink(localFilePath);
+            console.error(error);
+            fs.unlinkSync(localFilePath, (err) => {
+                                                if(err){
+                                                    console.log("fn unlink failed => Error:");
+                                                    console.log(err);
+                                                }else{
+                                                    console.log(`file deleted path: ${localFilePath}`);
+                                                }
+                                                
+                                            }
+                        )
         }
 };
 export {uploadOnCloudinary};
