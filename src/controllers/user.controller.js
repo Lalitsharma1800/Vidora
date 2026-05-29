@@ -4,6 +4,22 @@ import {ApiResponse} from "./../utils/apiResponse.js";
 import {User} from "./../model/username.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
+const generateAccessTokenAndRefreshToken = async (userId) => {
+    try{
+        const user = await User.findById(userId);
+        const accessToken = user.generateAccessToken();
+        const refreshToken = user.generateRefreshToken();
+
+        user.refreshToken = refreshToken;
+        await user.save({validateBeforeSave: false});
+
+        return {accessToken, refreshToken}
+    }
+    catch(err){
+        throw new ApiError(500, "Something went wrong, while generating tokens")
+    }
+}
+
 const registerUser = asyncHandler(
     
     async (req, res) => {
@@ -20,9 +36,7 @@ const registerUser = asyncHandler(
         const existedUser = await User.findOne({
                 $or: [{userName},{email}]
             })
-        if(existedUser) {
-            throw new ApiError(409, "User already existed")
-        };
+        if(existedUser) throw new ApiError(409, "User already existed");
 
         //check for image, avatar
         const avatarLocalPath = req.files?.avatar[0]?.path;
@@ -53,5 +67,55 @@ const registerUser = asyncHandler(
         }
 
         return  res.status(201).json(new ApiResponse(200, createdUser, "User registered Successfully"))
-        });
-export {registerUser};
+    });
+
+/**
+============================================
+    Register User Ends & Login User Starts
+============================================
+*/
+
+const loginUser = asyncHandler((req, res) => {
+
+        // Get the user credentials
+        const {userName, email, password} = req.body;
+
+        // validation for empty state
+        if(!userName || !email) throw new ApiError(400, "Username Or Email required");
+
+        // find user in db
+        const user = await User.findOne({
+            $or: [{userName},{email}]
+        })
+
+        // validate user exit or not
+        if(!user) throw new ApiError(404, "User does not exist.");
+
+        // get pass
+        const pass = user.password;
+
+        // validate the password
+        const isPasswordCorrect = await user.isPasswordCorrect(password);
+
+        if(!isPasswordCorrect) throw new ApiError(401, "Credentials incorrect");
+
+        const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id);
+
+        const loggedUser = await User.findById(user._id).select("-password -refreshToken");
+
+        const options = {httpOnly: true, secure: true};
+
+        return res.status(200).cookie("accessToken", accessToken, options).cookies("refreshToken", refreshToken, options).json(
+            new ApiResponse(200, {user: loggedUser, accessToken, refreshToken}, "User logged in successfully")
+          )
+});
+
+/**
+=================================================
+   login User Ends & logOut user starts
+=================================================
+ */
+
+
+
+export {registerUser, loginUser};
