@@ -125,8 +125,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
 
-        const loggedOutUser = await User.findByIdAndUpdate(req.user._id,{$set: {refreshToken: null}}, {returnDocument: "after"});
-        console.log(loggedOutUser);
+        const loggedOutUser = await User.findByIdAndUpdate(req.user._id,{$set: {refreshToken: null}}, {returnDocument: "after"}).select("-password -refreshToken");
+
         const options = {httpOnly: true, secure: true};
 
         return res
@@ -139,10 +139,10 @@ const logout = asyncHandler(async (req, res) => {
 })
 
 /**
-=========================================================
+============================================================
    logout User Ends & refresh the access token user starts
-=========================================================
- */
+============================================================
+*/
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
 
@@ -168,6 +168,59 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
                     new ApiResponse(200, {accessToken, refreshToken}, "Access Token refreshed successfully")
                 )
 
-})
+});
 
-export {registerUser, loginUser, logout};
+/**
+==================================================================
+   refresh the access token user end && change password starts
+==================================================================
+*/
+
+const changePassword = asyncHandler(async (req, res) => {
+
+    const {oldpassword,newPassword} = req.body.password;
+
+    if(!newPassword || !oldpassword) throw new ApiError(401, "Please Enter a valid password");
+
+    const user = await findById(req.user._id);
+    
+    if(!user) throw new ApiError(401, "user not found");
+
+    const isPasswordCorrect = await user.isPasswordCorrect(oldpassword);
+
+    if(!isPasswordCorrect) throw new ApiError(401, "Invalid Old Password");
+
+    user.password = newPassword;
+    
+    await user.save({validateBeforeSave: false});
+
+    return res
+                .status(200)
+                .json(new ApiResponse(200, {}, "Password changed successfully"))
+
+});
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+
+    return res
+                .status(200)
+                .json(new ApiError(200, req.user, "Current User retrieved successfully"));
+});
+
+const updateAccountDetail = asyncHandler(async (req, res) => {
+    const {fullName, email} = req.body;
+
+    if(!fullName || !email) throw new ApiError(400, "All fields are required");
+
+    const user = await User.findByIdAndUpdate(req.user?.id, {$set: {fullName: fullName, email: email}}, {returnDocument: "after"}).select("-password -refreshToken");
+
+    if(!user) throw ApiError(500, {}, "There is something went wrong at updateAccountDetail");
+
+    return res
+                .status(200)
+                .json(new ApiResponse(200, user, "user details updated successfully"));
+});
+
+
+
+export {registerUser, loginUser, logout, changePassword, getCurrentUser};
