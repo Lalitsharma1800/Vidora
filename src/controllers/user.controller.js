@@ -124,8 +124,8 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const logout = asyncHandler(async (req, res) => {
 
-        const user  = req.user;
-        await User.findByIdAndUpdate(user._id, {$set: {refreshToken: undefined}}, {returnNewDocument: true});
+        const loggedOutUser = await User.findByIdAndUpdate(req.user._id,{$set: {refreshToken: null}}, {returnDocument: "after"});
+        console.log(loggedOutUser);
         const options = {httpOnly: true, secure: true};
 
         return res
