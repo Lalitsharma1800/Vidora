@@ -200,12 +200,24 @@ const changePassword = asyncHandler(async (req, res) => {
 
 });
 
+/**
+==================================================================
+change password ends && get currentUser starts
+==================================================================
+*/
+
 const getCurrentUser = asyncHandler(async (req, res) => {
 
     return res
                 .status(200)
                 .json(new ApiError(200, req.user, "Current User retrieved successfully"));
 });
+
+/**
+==================================================================
+get currentUser ends && update account details starts
+==================================================================
+*/
 
 const updateAccountDetail = asyncHandler(async (req, res) => {
     const {fullName, email} = req.body;
@@ -220,6 +232,12 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
                 .status(200)
                 .json(new ApiResponse(200, user, "user details updated successfully"));
 });
+
+/**
+==================================================================
+update account details ends && update avatar & cover image starts  
+==================================================================
+*/
 
 const updateAvatar = asyncHandler((req, res) => {
             //check for image, avatar
@@ -238,6 +256,12 @@ const updateAvatar = asyncHandler((req, res) => {
                     .status(200)
                     .json(new ApiResponse(200, user, "Avatar changed successfully"));
 });
+
+/**
+==================================================================
+update avatar ends && update cover image starts 
+==================================================================
+*/
 
 const updateCoverImage = asyncHandler((req, res) => {
             //check for image
