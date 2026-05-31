@@ -3,6 +3,7 @@ import {ApiError} from "./../utils/apiError.js";
 import {ApiResponse} from "./../utils/apiResponse.js";
 import {User} from "./../model/username.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import jwt from "jsonwebtoken";
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try{
@@ -17,7 +18,7 @@ const generateAccessTokenAndRefreshToken = async (userId) => {
         return {accessToken, refreshToken}
     }
     catch(err){
-        throw new ApiError(500, "Something went wrong, while generating tokens")
+        throw new ApiError(500, `Something went wrong, while generating tokens`);
     }
 }
 
@@ -135,6 +136,38 @@ const logout = asyncHandler(async (req, res) => {
                     .json(
                         new ApiResponse(200, {}, "User logged out successfully.")
                     )
+})
+
+/**
+=========================================================
+   logout User Ends & refresh the access token user starts
+=========================================================
+ */
+
+const refreshAccessToken = asyncHandler(async (req, res) => {
+
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
+
+    if(!incomingRefreshToken) throw new ApiError(401, "unauthorised request");
+
+    const payload = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const user = await User.findById(payload?._id);
+
+    if(!user && (incomingRefreshToken !== user.refreshToken))  throw new ApiError(401, "Invalid Access Token");
+
+    const options = {httpOnly: true, secure: true};
+
+    const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken();
+
+    return res
+                .status(200)
+                .cookie("accessToken", options)
+                .cookie("refreshToken", options)
+                .json(
+                    new ApiResponse(200, {accessToken, refreshToken}, "Access Token refreshed successfully")
+                )
+
 })
 
 export {registerUser, loginUser, logout};
