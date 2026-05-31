@@ -212,7 +212,7 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
 
     if(!fullName || !email) throw new ApiError(400, "All fields are required");
 
-    const user = await User.findByIdAndUpdate(req.user?.id, {$set: {fullName: fullName, email: email}}, {returnDocument: "after"}).select("-password -refreshToken");
+    const user = await User.findByIdAndUpdate(req.user?._id, {$set: {fullName: fullName, email: email}}, {returnDocument: "after"}).select("-password -refreshToken");
 
     if(!user) throw ApiError(500, {}, "There is something went wrong at updateAccountDetail");
 
@@ -221,6 +221,18 @@ const updateAccountDetail = asyncHandler(async (req, res) => {
                 .json(new ApiResponse(200, user, "user details updated successfully"));
 });
 
+const updateAvatar = asyncHandler((req, res) => {
+            //check for image, avatar
+        const avatarLocalPath = req.files?.avatar[0]?.path;
+        if(!avatarLocalPath) throw new ApiError(400, "Avatar file is required");
+
+        const user = await User.findByIdAndUpdate(req.user?._id,{ $set: {avatar: avatarLocalPath}}, {returnDocument: "after"}).select("-password -refreshToken");
+        if(!user) throw new ApiError(500, "avatar did not change please try again later");
+
+        return res
+                    .status(200)
+                    .json(new ApiResponse(200, user, "Avatar changed successfully"));
+});
 
 
-export {registerUser, loginUser, logout, changePassword, getCurrentUser};
+export {registerUser, loginUser, logout, changePassword, getCurrentUser, updateAccountDetail, updateAvatar};
