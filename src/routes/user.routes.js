@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {registerUser, loginUser, logout, changePassword, getCurrentUser, updateAccountDetail, updateAvatar} from "./../controllers/user.controller.js"
+import {registerUser, loginUser, logout, changePassword, getCurrentUser, updateAccountDetail, updateAvatar, updateCoverImage} from "./../controllers/user.controller.js"
 import { upload } from "../middleware/multer.middleware.js";
 import { verifyUser } from "../middleware/auth.middleware.js";
 
@@ -34,5 +34,13 @@ router.route("/updateAvatar").post(
             maxCount: 1
         },
     ]), verifyUser, updateAvatar);
+
+router.route("/updateCover").post(
+    upload.fields([
+        {
+            name: "coverImage",
+            maxCount: 1
+        },
+    ]), verifyUser, updateCoverImage);
 
 export default router;
