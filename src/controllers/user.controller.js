@@ -81,7 +81,7 @@ const loginUser = asyncHandler((req, res) => {
         const {userName, email, password} = req.body;
 
         // validation for empty state
-        if(!userName || !email) throw new ApiError(400, "Username Or Email required");
+        if(!(userName || email)) throw new ApiError(400, "Username Or Email required");
 
         // find user in db
         const user = await User.findOne({
