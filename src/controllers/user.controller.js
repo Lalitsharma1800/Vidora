@@ -7,6 +7,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const generateAccessTokenAndRefreshToken = async (userId) => {
     try{
         const user = await User.findById(userId);
+        
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
 
@@ -136,4 +137,4 @@ const logout = asyncHandler(async (req, res) => {
                     )
 })
 
-export {registerUser, loginUser};
+export {registerUser, loginUser, logout};
