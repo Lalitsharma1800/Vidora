@@ -226,7 +226,12 @@ const updateAvatar = asyncHandler((req, res) => {
         const avatarLocalPath = req.files?.avatar[0]?.path;
         if(!avatarLocalPath) throw new ApiError(400, "Avatar file is required");
 
-        const user = await User.findByIdAndUpdate(req.user?._id,{ $set: {avatar: avatarLocalPath}}, {returnDocument: "after"}).select("-password -refreshToken");
+        // upload documents on cloudinary
+        const avatar = await uploadOnCloudinary(avatarLocalPath);
+
+        if(!avatar.url) throw new ApiError(500, "Something went wront while uploading the file to cloudinary");
+
+        const user = await User.findByIdAndUpdate(req.user?._id,{ $set: {avatar: avatar.url}}, {returnDocument: "after"}).select("-password -refreshToken");
         if(!user) throw new ApiError(500, "avatar did not change please try again later");
 
         return res
@@ -239,7 +244,12 @@ const updateCoverImage = asyncHandler((req, res) => {
         const coverImageLocalPath = req.files?.coverImage[0]?.path;
         if(!coverImageLocalPath) throw new ApiError(400, "coverImage is required");
 
-        const user = await User.findByIdAndUpdate(req.user?._id,{ $set: {avatar: coverImageLocalPath}}, {returnDocument: "after"}).select("-password -refreshToken");
+        // upload documents on cloudinary
+        const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+        if(!coverImage.url) throw new ApiError(500, "Something went wront while uploading the file to cloudinary");
+        const user = await User.findByIdAndUpdate(req.user?._id,{ $set: {coverImage: coverImage.url}}, {returnDocument: "after"}).select("-password -refreshToken");
+        
         if(!user) throw new ApiError(500, "coverImage did not change please try again later");
 
         return res
