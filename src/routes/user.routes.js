@@ -26,6 +26,6 @@ router.route("/login").post(loginUser)
 router.route("/logout").post(verifyUser, logout);
 router.route("/changePassword").post(verifyUser, changePassword);
 router.route("/getDetails").post(verifyUser, getCurrentUser);
-
+router.route("/updateAccountDetail").post(verifyUser, updateAccountDetail);
 
 export default router;
