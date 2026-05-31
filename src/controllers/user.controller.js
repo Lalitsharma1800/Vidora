@@ -234,5 +234,19 @@ const updateAvatar = asyncHandler((req, res) => {
                     .json(new ApiResponse(200, user, "Avatar changed successfully"));
 });
 
+const updateCoverImage = asyncHandler((req, res) => {
+            //check for image
+        const coverImageLocalPath = req.files?.coverImage[0]?.path;
+        if(!coverImageLocalPath) throw new ApiError(400, "coverImage is required");
 
-export {registerUser, loginUser, logout, changePassword, getCurrentUser, updateAccountDetail, updateAvatar};
+        const user = await User.findByIdAndUpdate(req.user?._id,{ $set: {avatar: coverImageLocalPath}}, {returnDocument: "after"}).select("-password -refreshToken");
+        if(!user) throw new ApiError(500, "coverImage did not change please try again later");
+
+        return res
+                    .status(200)
+                    .json(new ApiResponse(200, user, "coverImage changed successfully"));
+});
+
+
+
+export {registerUser, loginUser, logout, changePassword, getCurrentUser, updateAccountDetail, updateAvatar, updateCoverImage};
