@@ -40,7 +40,7 @@ router.route("/getUser").get(verifyUser, getCurrentUser);
 
 router.route("/updateAccountDetail").patch(verifyUser, updateAccountDetail);
 router.route("/updateAvatar").patch(upload.single("avatar"), verifyUser, updateAvatar);
-router.route("/updateCover").patch(upload.single("coverImage"), verifyUser, updateCoverImage);
+router.route("/updateCoverImage").patch(upload.single("coverImage"), verifyUser, updateCoverImage);
 
 
 export default router;

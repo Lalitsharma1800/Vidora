@@ -240,8 +240,8 @@ update account details ends && update avatar & cover image starts
 */
 
 const updateAvatar = asyncHandler(async (req, res) => {
-            //check for image, avatar
-        const avatarLocalPath = req.files?.avatar[0]?.path;
+            //check for  avatar
+        const avatarLocalPath = req.file?.path;
         if(!avatarLocalPath) throw new ApiError(400, "Avatar file is required");
 
         // upload documents on cloudinary
@@ -265,7 +265,7 @@ update avatar ends && update cover image starts
 
 const updateCoverImage = asyncHandler(async (req, res) => {
             //check for image
-        const coverImageLocalPath = req.files?.coverImage[0]?.path;
+        const coverImageLocalPath = req.file?.path;
         if(!coverImageLocalPath) throw new ApiError(400, "coverImage is required");
 
         // upload documents on cloudinary
