@@ -178,11 +178,11 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 const changePassword = asyncHandler(async (req, res) => {
 
-    const {oldpassword,newPassword} = req.body.password;
+    const {oldpassword,newPassword} = req.body;
 
     if(!newPassword || !oldpassword) throw new ApiError(401, "Please Enter a valid password");
 
-    const user = await findById(req.user._id);
+    const user = await User.findById(req.user._id);
     
     if(!user) throw new ApiError(401, "user not found");
 
