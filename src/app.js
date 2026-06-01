@@ -18,4 +18,12 @@ import userRouter from "./routes/user.routes.js";
 
 app.use("/api/v1/users", userRouter);
 
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message: err.message
+    });
+    next()
+});
 export {app};
