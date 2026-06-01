@@ -35,22 +35,12 @@ router.route("/login").post(loginUser)
 // securec routes
 router.route("/logout").post(verifyUser, logout);
 router.route("/changePassword").post(verifyUser, changePassword);
-router.route("/getUser").post(verifyUser, getCurrentUser);
-router.route("/updateAccountDetail").post(verifyUser, updateAccountDetail);
-router.route("/updateAvatar").post(
-    upload.fields([
-        {
-            name: "avatar",
-            maxCount: 1
-        },
-    ]), verifyUser, updateAvatar);
 
-router.route("/updateCover").post(
-    upload.fields([
-        {
-            name: "coverImage",
-            maxCount: 1
-        },
-    ]), verifyUser, updateCoverImage);
+router.route("/getUser").get(verifyUser, getCurrentUser);
+
+router.route("/updateAccountDetail").patch(verifyUser, updateAccountDetail);
+router.route("/updateAvatar").patch(upload.single("avatar"), verifyUser, updateAvatar);
+router.route("/updateCover").patch(upload.single("coverImage"), verifyUser, updateCoverImage);
+
 
 export default router;
