@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { upload } from "../middleware/multer.middleware.js";
+import { verifyUser } from "../middleware/auth.middleware.js";
 import {
         registerUser, 
         loginUser, 
@@ -9,8 +11,7 @@ import {
         updateAvatar, 
         updateCoverImage
     } from "./../controllers/user.controller.js";
-import { upload } from "../middleware/multer.middleware.js";
-import { verifyUser } from "../middleware/auth.middleware.js";
+
 
 
 const router = Router();
@@ -34,7 +35,7 @@ router.route("/login").post(loginUser)
 // securec routes
 router.route("/logout").post(verifyUser, logout);
 router.route("/changePassword").post(verifyUser, changePassword);
-router.route("/getDetails").post(verifyUser, getCurrentUser);
+router.route("/getUser").post(verifyUser, getCurrentUser);
 router.route("/updateAccountDetail").post(verifyUser, updateAccountDetail);
 router.route("/updateAvatar").post(
     upload.fields([
