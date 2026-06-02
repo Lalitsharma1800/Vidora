@@ -32,5 +32,25 @@ const toggle_subscribe = asyncHandler(async (req, res) => {
                 .json(new ApiResponse(200, "channel subscribed successfully"));
 });
 
+const getSubscriberList = asyncHandler(async (req, res) => {
+    const user = req.user;
 
-export {toggle_subscribe};
+    const subscriberList = await Subscription.find({channel: user._id}).select("-channel");
+    console.log(subscriberList);
+    const count = subscriberList.length;
+    return res
+                .status(200)
+                .json(new ApiResponse(200, {count, subscriberList}, "subscribers fetched successfully"))
+});
+
+const getSubscribedToList = asyncHandler(async (req, res) => {
+    const user = req.user;
+
+    const subscribedToList = await Subscription.find({subscriber: user._id}).select("-subscriber");
+    const count = subscribedToList.length;
+    return res
+                .status(200)
+                .json(new ApiResponse(200, {count, subscribedToList}, "following fetched successfully"))
+});
+
+export {toggle_subscribe, getSubscriberList, getSubscribedToList};
