@@ -280,7 +280,11 @@ const updateCoverImage = asyncHandler(async (req, res) => {
                     .status(200)
                     .json(new ApiResponse(200, user, "coverImage changed successfully"));
 });
-
+/**
+==================================================================
+update cover ends && getChannelProfile starts
+==================================================================
+*/
 const getChannelProfile = asyncHandler(async (req, res) => {
     const {username} = req.params;
 
