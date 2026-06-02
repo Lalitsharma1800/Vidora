@@ -9,7 +9,8 @@ import {
         getCurrentUser, 
         updateAccountDetail, 
         updateAvatar, 
-        updateCoverImage
+        updateCoverImage,
+        refreshAccessToken
     } from "./../controllers/user.controller.js";
 
 
@@ -30,7 +31,8 @@ router.route("/register").post(
                             registerUser
                         );
 
-router.route("/login").post(loginUser)
+router.route("/login").post(loginUser);
+router.route("/refreshAccessToken").post(refreshAccessToken);
 
 // securec routes
 router.route("/logout").post(verifyUser, logout);

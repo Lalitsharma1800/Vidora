@@ -291,5 +291,6 @@ export {
         getCurrentUser, 
         updateAccountDetail, 
         updateAvatar, 
-        updateCoverImage
+        updateCoverImage,
+        refreshAccessToken
     };
