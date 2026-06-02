@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "./../utils/apiError.js";
 import {ApiResponse} from "./../utils/apiResponse.js";
 import {User} from "./../model/username.model.js";
+import {Subscription} from "./../model/subscription.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 
@@ -103,8 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
         const {accessToken, refreshToken} = await generateAccessTokenAndRefreshToken(user._id);
 
-        const loggedUser = await User.findById(user._id).select("-password -refreshToken");
-
+        const loggedUser = await User.findById(user._id).select("-password -refreshToken").select("-password -refreshToken");
         const options = {httpOnly: true, secure: true};
 
         return res
@@ -281,7 +281,72 @@ const updateCoverImage = asyncHandler(async (req, res) => {
                     .json(new ApiResponse(200, user, "coverImage changed successfully"));
 });
 
+const getChannelProfile = asyncHandler(async (req, res) => {
+    const {username} = req.params;
 
+    if(!username || username.trim() === "") throw new ApiError(401, "Username is missing.");
+
+    const channel = await User.aggregate([
+
+        {
+            $match: {userName: username?.toLowerCase()}
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "channel",
+                as: "subscribers"
+            }
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "subscriber",
+                as:"subscribed_to"
+            }
+        },
+        {
+            $addFields:{
+                subscriberCount: {
+                    $size: "$subscribers"
+                },
+                subscribedToCount: {
+                    $size: "$subscribed_to"
+                },
+                isSubscribed: {
+                    $cond: {
+                        if: {$in : [req.user?._id, "$subscribers.subscriber"]},
+                        then: true,
+                        else: false
+                    }
+                }
+            },
+        },
+        {   $project: {
+                fullName: 1,
+                userName: 1,
+                email: 1,
+                avatar: 1,
+                coverImage: 1,
+                subscribedToCount: 1,
+                subscriberCount: 1,
+                isSubscribed: 1
+            }
+        }
+    ]);
+
+    console.log(channel);
+    
+    if(!channel?.length) throw new ApiError(404, "channel does not exist");
+
+    return res
+                .status(200)
+                .json(
+                    new ApiResponse(200, channel[0], "User Channel fetched successfully")
+                );
+});
 
 export {
         registerUser, 
@@ -292,5 +357,6 @@ export {
         updateAccountDetail, 
         updateAvatar, 
         updateCoverImage,
-        refreshAccessToken
+        refreshAccessToken,
+        getChannelProfile
     };

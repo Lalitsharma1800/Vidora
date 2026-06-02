@@ -10,9 +10,10 @@ import {
         updateAccountDetail, 
         updateAvatar, 
         updateCoverImage,
-        refreshAccessToken
+        refreshAccessToken,
+        getChannelProfile
     } from "./../controllers/user.controller.js";
-
+import {toggle_subscribe,} from "./../controllers/subscription.controller.js";
 
 
 const router = Router();
@@ -39,6 +40,7 @@ router.route("/logout").post(verifyUser, logout);
 router.route("/changePassword").post(verifyUser, changePassword);
 
 router.route("/getUser").get(verifyUser, getCurrentUser);
+router.route("/channel/:username").get(verifyUser, getChannelProfile);
 
 router.route("/updateAccountDetail").patch(verifyUser, updateAccountDetail);
 router.route("/updateAvatar").patch(upload.single("avatar"), verifyUser, updateAvatar);
