@@ -14,6 +14,7 @@ import {
         getChannelProfile
     } from "./../controllers/user.controller.js";
 import {toggle_subscribe,} from "./../controllers/subscription.controller.js";
+import { uploadVideo } from "../controllers/video.controller.js";
 
 
 const router = Router();
@@ -38,6 +39,21 @@ router.route("/refreshAccessToken").post(refreshAccessToken);
 // securec routes
 router.route("/logout").post(verifyUser, logout);
 router.route("/changePassword").post(verifyUser, changePassword);
+router.route("/uploadVideo").post(
+                            upload.fields([
+                                {
+                                    name: "video",
+                                    maxCount: 1
+                                },
+                                {
+                                    name: "thumbnail",
+                                    maxCount: 1
+                                }
+                            ]),
+                            verifyUser,
+                            uploadVideo
+                        );
+
 
 router.route("/getUser").get(verifyUser, getCurrentUser);
 router.route("/channel/:username").get(verifyUser, getChannelProfile);
