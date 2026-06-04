@@ -2,11 +2,12 @@ import mongoose from "mongoose";
 import { uploadVideoOnCloudinary } from "../utils/cloudinary.js";
 import { User } from "../model/username.model.js";
 import { Subscription } from "../model/subscription.model.js";
-import {Video} from ".././model/video.model.js"
+import {Video} from ".././model/video.model.js";
+import { WatchHistory } from "../model/watchhistory.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { UploadStream } from "cloudinary";
+import { ReturnDocument } from "mongodb";
 
 
 
@@ -32,7 +33,7 @@ const uploadVideo = asyncHandler(async (req, res) => {
 
     return res
                 .status(200)
-                .json(new ApiResponse(200, "video uploaded successfully"));
+                .json(new ApiResponse(200,  null, "video uploaded successfully"));
 });
 
 
@@ -50,6 +51,22 @@ const changeThumbnail = asyncHandler(async (req, res) => {
 
     return res
                 .status(200)
-                .json(new ApiResponse(200, "thumbnail changed successfully"))
+                .json(new ApiResponse(200, null,"thumbnail changed successfully"))
 });
+
+const saveInHistory = asyncHandler(async (req, res) => {
+    const video = req.videoId;
+    if(!video) throw new ApiError(400, "Invalid video");
+
+    const progress = req.progress || 0;
+
+    let history = await WatchHistory.findOneAndUpdate({videoId: video, userId: req.user._id},{$set:{progress: progress, lastWatchedAt: new Date()}}, {returnDocument: "after", upsert: true});
+
+    if(!history) throw new ApiError(500, "Something went wrong while saving the video in history");
+    
+    return res.
+                status(200)
+                json(new ApiResponse(200,null, "video saved in history successfully"))
+});
+
 export {uploadVideo, changeThumbnail};
