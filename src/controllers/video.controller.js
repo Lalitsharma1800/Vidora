@@ -8,6 +8,7 @@ import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ReturnDocument } from "mongodb";
+import {subscriberCount} from "./subscription.controller.js"
 
 
 
@@ -35,8 +36,6 @@ const uploadVideo = asyncHandler(async (req, res) => {
                 .status(200)
                 .json(new ApiResponse(200,  null, "video uploaded successfully"));
 });
-
-
 const changeThumbnail = asyncHandler(async (req, res) => {
     const user = req.user;
 
@@ -53,6 +52,33 @@ const changeThumbnail = asyncHandler(async (req, res) => {
                 .status(200)
                 .json(new ApiResponse(200, null,"thumbnail changed successfully"))
 });
+const getVideos = asyncHandler(async (req, res) => {
+    const videoData = await Video.aggregate([
+        {
+            $match: {published: true}
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField:"owner",
+                foreignField: "_id",
+                as: "channel",
+                pipeline: [
+                        {
+                            $project: {
+                                userName: 1,
+                                fullName: 1,
+                                avatar: 1
+                            }
+                        },               
+                ]
+            }
+        },
+    ]);
+    return res.
+                status(200)
+                json(new ApiResponse(200, getVideos, "Home feed fetched"));
+})
 
 const saveInHistory = asyncHandler(async (req, res) => {
     const video = req.videoId;
@@ -68,5 +94,4 @@ const saveInHistory = asyncHandler(async (req, res) => {
                 status(200)
                 json(new ApiResponse(200,null, "video saved in history successfully"))
 });
-
-export {uploadVideo, changeThumbnail};
+export {uploadVideo, changeThumbnail, getVideos};
