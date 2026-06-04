@@ -68,4 +68,4 @@ const uploadVideoOnCloudinary = async (localFilePath) => {
                         )
         }
 };
-export {uploadOnCloudinary};
+export {uploadOnCloudinary, uploadVideoOnCloudinary};
