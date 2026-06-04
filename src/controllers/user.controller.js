@@ -135,7 +135,7 @@ const logout = asyncHandler(async (req, res) => {
                     .clearCookie("accessToken", options)
                     .clearCookie("refreshToken", options)
                     .json(
-                        new ApiResponse(200, {}, "User logged out successfully.")
+                        new ApiResponse(200, null, "User logged out successfully.")
                     )
 })
 
@@ -197,7 +197,7 @@ const changePassword = asyncHandler(async (req, res) => {
 
     return res
                 .status(200)
-                .json(new ApiResponse(200, {}, "Password changed successfully"))
+                .json(new ApiResponse(200, null, "Password changed successfully"))
 
 });
 
@@ -211,7 +211,7 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 
     return res
                 .status(200)
-                .json(new ApiResponse(200, req.user, "Current User retrieved successfully"));
+                .json(new ApiResponse(200, {user: req.user}, "Current User retrieved successfully"));
 });
 
 /**
@@ -341,9 +341,6 @@ const getChannelProfile = asyncHandler(async (req, res) => {
             }
         }
     ]);
-
-    console.log(channel);
-    
     if(!channel?.length) throw new ApiError(404, "channel does not exist");
 
     return res
@@ -375,7 +372,7 @@ const watchHistory = asyncHandler(async (req, res) => {
                         {
                             $lookup: {
                                 from: "users",
-                                localFiel:"owner",
+                                localField:"owner",
                                 foreignField: "_id",
                                 as: "channel",
                                 pipeline: [
@@ -404,8 +401,10 @@ const watchHistory = asyncHandler(async (req, res) => {
                     video: 1,
                 }
             }
-
         ])
+        return res.
+                    status(200)
+                    json(new ApiResponse(200, watchHistory, "History fetched successfully"));
 });
 
 
