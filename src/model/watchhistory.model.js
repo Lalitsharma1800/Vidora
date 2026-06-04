@@ -2,7 +2,7 @@ import mongoose, { mongo } from "mongoose";
 import { Schema } from "mongoose";
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
-const WatchHistory = new Schema(
+const Watch_History = new Schema(
                 {
                   videoId: {
                     type: mongoose.Types.ObjectId,
@@ -16,9 +16,13 @@ const WatchHistory = new Schema(
                     type: Number,
                     required: true
                   },
+                  lastWatchedAt: {
+                    type: Date,
+                    required: true
+                  }
                 },
                 {timestamps: true}
 );
 
 mongoose.plugin(mongooseAggregatePaginate);
-export const WatchHistory = mongoose.model("watchHistory", WatchHistory);
+export const WatchHistory = mongoose.model("watch_History", Watch_History);
