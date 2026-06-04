@@ -2,7 +2,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "./../utils/apiError.js";
 import {ApiResponse} from "./../utils/apiResponse.js";
 import {User} from "./../model/username.model.js";
-import {Subscription} from "./../model/subscription.model.js"
+import {Subscription} from "./../model/subscription.model.js";
+import { WatchHistory } from "../model/watchhistory.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import jwt from "jsonwebtoken";
 
@@ -351,6 +352,62 @@ const getChannelProfile = asyncHandler(async (req, res) => {
                     new ApiResponse(200, channel[0], "User Channel fetched successfully")
                 );
 });
+/**
+==================================================================
+getChannelProfile ends && watchHistory starts
+==================================================================
+*/
+
+const watchHistory = asyncHandler(async (req, res) => {
+    
+        const user = req.user;
+        const watch_history = await WatchHistory.aggregate([
+            {
+                $match: {userId: user.id}
+            },
+            {
+                $lookup : {
+                    from: "videos",
+                    localField: "videoId",
+                    foreignField: "_id",
+                    as: "video",
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: "users",
+                                localFiel:"owner",
+                                foreignField: "_id",
+                                as: "channel",
+                                pipeline: [
+                                    {
+                                        $project: {
+                                           userName: 1,
+                                           fullName: 1,
+                                           avatar: 1
+                                        }
+                                    },
+                                ]                  
+                            }
+                        },
+                        {
+                            $unwind: "$channel"
+                        },
+                    ]
+                },
+            },
+            {
+                $unwind: "$video"
+            },
+            {
+                $project: {
+                    progress: 1,
+                    video: 1,
+                }
+            }
+
+        ])
+});
+
 
 export {
         registerUser, 
