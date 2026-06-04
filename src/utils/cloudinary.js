@@ -38,4 +38,34 @@ const uploadOnCloudinary = async (localFilePath) => {
                         )
         }
 };
+const uploadVideoOnCloudinary = async (localFilePath) => {
+        try{
+            if(!localFilePath) throw new Error("file not found");
+            const response = await cloudinary.uploader.upload_large(localFilePath, {resource_type: "auto"});
+            fs.unlinkSync(localFilePath, (err) => {
+                                                if(err){
+                                                    console.log("fn unlink failed => Error:");
+                                                    console.log(err);
+                                                }else{
+                                                    console.log(`file deleted path: ${localFilePath}`);
+                                                }
+                                                
+                                            }
+                            );
+            return response;
+        }
+        catch(error){
+            console.error(error);
+            fs.unlinkSync(localFilePath, (err) => {
+                                                if(err){
+                                                    console.log("fn unlink failed => Error:");
+                                                    console.log(err);
+                                                }else{
+                                                    console.log(`file deleted path: ${localFilePath}`);
+                                                }
+                                                
+                                            }
+                        )
+        }
+};
 export {uploadOnCloudinary};
