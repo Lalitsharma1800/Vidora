@@ -59,7 +59,7 @@ const registerUser = asyncHandler(
         if(!avatar) throw new ApiError(400, "Avatar file is required");
 
         // uploading details to db
-        const user = await User.create({userName: userName.toLowerCase(), fullName, email, password, avatar: avatar.url, coverImage: coverImage?.url || ""})
+        const user = await User.create({userName: userName.toLowerCase(), fullName, email, password, avatar: avatar?.url || "", coverImage: coverImage?.url || ""})
 
         // validate - is user created successfully
         const createdUser = await User.findById(user._id).select(
@@ -70,7 +70,7 @@ const registerUser = asyncHandler(
             throw new ApiError(500, "Something went wrong while registering the user")
         }
 
-        return  res.status(201).json(new ApiResponse(200, createdUser, "User registered Successfully"))
+        return  res.status(201).json(new ApiResponse(200, [createdUser], "User registered Successfully"))
     });
 
 /**
@@ -402,9 +402,9 @@ const watchHistory = asyncHandler(async (req, res) => {
                 }
             }
         ])
-        return res.
-                    status(200)
-                    json(new ApiResponse(200, watchHistory, "History fetched successfully"));
+        return res
+                    .status(200)
+                    .json(new ApiResponse(200, [watchHistory], "History fetched successfully"));
 });
 
 
@@ -418,5 +418,6 @@ export {
         updateAvatar, 
         updateCoverImage,
         refreshAccessToken,
-        getChannelProfile
+        getChannelProfile,
+        watchHistory
     };
