@@ -25,7 +25,7 @@ const uploadOnCloudinary = async (localFilePath) => {
             return response;
         }
         catch(error){
-            console.error(error);
+            console.error(`cloudinary error: \n${error}`);
             fs.unlinkSync(localFilePath, (err) => {
                                                 if(err){
                                                     console.log("fn unlink failed => Error:");
@@ -41,7 +41,7 @@ const uploadOnCloudinary = async (localFilePath) => {
 const uploadVideoOnCloudinary = async (localFilePath) => {
         try{
             if(!localFilePath) throw new Error("file not found");
-            const response = await cloudinary.uploader.upload_large(localFilePath, {resource_type: "auto"});
+            const response = await cloudinary.uploader.upload_large(localFilePath, {resource_type: "video"});
             fs.unlinkSync(localFilePath, (err) => {
                                                 if(err){
                                                     console.log("fn unlink failed => Error:");
@@ -55,7 +55,7 @@ const uploadVideoOnCloudinary = async (localFilePath) => {
             return response;
         }
         catch(error){
-            console.error(error);
+            console.error(`cloudinary error: \n${error}`);
             fs.unlinkSync(localFilePath, (err) => {
                                                 if(err){
                                                     console.log("fn unlink failed => Error:");
