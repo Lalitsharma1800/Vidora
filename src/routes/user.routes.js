@@ -11,10 +11,10 @@ import {
         updateAvatar, 
         updateCoverImage,
         refreshAccessToken,
-        getChannelProfile
+        getChannelProfile,
+        watchHistory
     } from "./../controllers/user.controller.js";
-import {toggle_subscribe,} from "./../controllers/subscription.controller.js";
-import { uploadVideo } from "../controllers/video.controller.js";
+import { uploadVideo, getFeed, saveInHistory, getSubscriberCount, changeThumbnail, getVideo } from "../controllers/video.controller.js";
 
 
 const router = Router();
@@ -35,6 +35,9 @@ router.route("/register").post(
 
 router.route("/login").post(loginUser);
 router.route("/refreshAccessToken").post(refreshAccessToken);
+router.route("/home").get(getFeed);
+
+router.route("/video/:id").get(getVideo);
 
 // securec routes
 router.route("/logout").post(verifyUser, logout);
@@ -54,13 +57,17 @@ router.route("/uploadVideo").post(
                             uploadVideo
                         );
 
-
+router.route("/save").post(verifyUser, saveInHistory);
+router.route("/home").post(verifyUser,getSubscriberCount);
 router.route("/getUser").get(verifyUser, getCurrentUser);
 router.route("/channel/:username").get(verifyUser, getChannelProfile);
+router.route("/history").get(verifyUser, watchHistory);
+
 
 router.route("/updateAccountDetail").patch(verifyUser, updateAccountDetail);
 router.route("/updateAvatar").patch(upload.single("avatar"), verifyUser, updateAvatar);
 router.route("/updateCoverImage").patch(upload.single("coverImage"), verifyUser, updateCoverImage);
+router.route("/changeThumbnail").patch(upload.single("thumbnail"), verifyUser, changeThumbnail);
 
 
 export default router;
