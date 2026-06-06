@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { uploadVideoOnCloudinary } from "../utils/cloudinary.js";
+import { uploadVideoOnCloudinary, uploadOnCloudinary} from "../utils/cloudinary.js";
 import { User } from "../model/username.model.js";
 import { Subscription } from "../model/subscription.model.js";
 import {Video} from ".././model/video.model.js";
@@ -7,8 +7,7 @@ import { WatchHistory } from "../model/watchhistory.model.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ReturnDocument } from "mongodb";
-import {subscriberCount} from "./subscription.controller.js"
+
 
 
 
@@ -17,13 +16,12 @@ const uploadVideo = asyncHandler(async (req, res) => {
     const {title, description} = req.body;
     if(!title) throw new ApiError(400, "title not provided");
     
-    const videoFile = req.file?.video[0]?.path;
+    const videoFile = req.files?.video[0]?.path;
     if(!videoFile) throw new ApiError(401, "Please upload video");
-    
-    const thumbnailFile = req.file?.thumbnail[0]?.path;
-    if(!thumbnailFile) throw new ApiError(401, "Please upload thumbnail");
-        
-    const uploaded_video = await uploadVideoOnCloudinary(videoFile);
+    console.log(videoFile);
+    const thumbnailFile = req.files?.thumbnail[0]?.path;
+    if(!thumbnailFile) throw new ApiError(401, "Please upload thumbnail");  
+    const uploaded_video = await uploadOnCloudinary(videoFile);
     if(!uploaded_video.url) throw new ApiError(500, "something went wrong while uploading the video file to cloudinary");
 
     const thumbnail = await uploadOnCloudinary(thumbnailFile);
@@ -34,25 +32,38 @@ const uploadVideo = asyncHandler(async (req, res) => {
 
     return res
                 .status(200)
-                .json(new ApiResponse(200,  null, "video uploaded successfully"));
+                .json(new ApiResponse(200,  [video], "video uploaded successfully"));
 });
 const changeThumbnail = asyncHandler(async (req, res) => {
     const user = req.user;
-
+    const {videoId} = req.body;
+    if(!videoId) throw new ApiError("Please select any video");
     const thumbnailFile = req.file?.path;
     if(!thumbnailFile) throw new ApiError(401, "Please upload thumbnail");
-        
+
+    const video = await Video.findById(new mongoose.Types.ObjectId(videoId));
+    if(!video) throw new ApiError(400, "please upload a video first");
     const thumbnail = await uploadOnCloudinary(thumbnailFile);
     if(!thumbnail.url) throw new ApiError(500, "something went wrong while uploading the thumbnail file to cloudinary");
 
-    const video = Video.findOne({owner: user._id});
-    if(!video) throw new ApiError(400, "please upload a video first");
-
+    const changedThumbnail = await Video.findByIdAndUpdate(new mongoose.Types.ObjectId(video._id),{$set: {thumbnail: thumbnail.url}})
+    if(!changedThumbnail) throw new ApiError(500, "thumbnail not changed please try again later");
     return res
                 .status(200)
                 .json(new ApiResponse(200, null,"thumbnail changed successfully"))
 });
-const getVideos = asyncHandler(async (req, res) => {
+
+const getVideo = asyncHandler(async (req, res) => {
+    const {id} = req.params;
+    if(!id) throw new ApiError(400, "please select a video");
+
+    const video = await Video.findById(new mongoose.Types.ObjectId(id));
+    return res
+                .status(200)
+                .json(new ApiResponse(200, video, "video fetched successfully"))
+});
+
+const getFeed = asyncHandler(async (req, res) => {
     const videoData = await Video.aggregate([
         {
             $match: {published: true}
@@ -75,23 +86,35 @@ const getVideos = asyncHandler(async (req, res) => {
             }
         },
     ]);
-    return res.
-                status(200)
-                json(new ApiResponse(200, getVideos, "Home feed fetched"));
-})
-
+    console.log(videoData);
+    return res
+                .status(200)
+                .json(new ApiResponse(200, videoData, "Home feed fetched"));
+});
+const getSubscriberCount = asyncHandler(async (req, res) => {
+    const {channelId} = req.body;
+    if(!mongoose.Types.ObjectId.isValid(channelId)) throw new ApiError(400, "please enter select a channel");
+    const userId = req.user._id;
+    const subscriberCount = await Subscription.countDocuments({channel:new mongoose.Types.ObjectId(channelId)});
+    const isSubscribed = await Subscription.findOne({channel: new mongoose.Types.ObjectId(channelId), subscriber: new mongoose.Types.ObjectId(userId)}) || false;
+    return res
+                .status(200)
+                .json(new ApiResponse(200, {subscriberCount, isSubscribed}, "subscriberCount & subscribedStatus fetched successfully"));
+});
 const saveInHistory = asyncHandler(async (req, res) => {
-    const video = req.videoId;
-    if(!video) throw new ApiError(400, "Invalid video");
+    const {videoId} = req.body;
+    if(!mongoose.Types.ObjectId.isValid(videoId)) throw new ApiError(400, "Invalid video");
+    if(!mongoose.Types.ObjectId.isValid(req.user?._id)) throw new ApiError(400, "Invalid video");
 
     const progress = req.progress || 0;
 
-    let history = await WatchHistory.findOneAndUpdate({videoId: video, userId: req.user._id},{$set:{progress: progress, lastWatchedAt: new Date()}}, {returnDocument: "after", upsert: true});
+    let history = await WatchHistory.findOneAndUpdate({videoId:new mongoose.Types.ObjectId(videoId), userId: req.user._id},{$set:{progress: progress, lastWatchedAt: new Date()}}, {returnDocument: "after", upsert: true});
 
     if(!history) throw new ApiError(500, "Something went wrong while saving the video in history");
     
-    return res.
-                status(200)
-                json(new ApiResponse(200,null, "video saved in history successfully"))
+    return res
+                .status(200)
+                .json(new ApiResponse(200,null, "video saved in history successfully"))
 });
-export {uploadVideo, changeThumbnail, getVideos};
+
+export {uploadVideo, changeThumbnail, getFeed, getSubscriberCount, saveInHistory, getVideo};
