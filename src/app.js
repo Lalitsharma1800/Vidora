@@ -16,9 +16,11 @@ app.use(cookieParser());
 
 import userRouter from "./routes/user.routes.js";
 import subscriptionRouter from "./routes/subscription.routes.js";
+import likeRouter from "./routes/like.routes.js";
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/channel", subscriptionRouter);
+app.use("/api/v1/reaction", likeRouter)
 
 
 
