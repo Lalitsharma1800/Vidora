@@ -15,21 +15,16 @@ const uploadVideo = asyncHandler(async (req, res) => {
     const user = req.user;
     const {title, description} = req.body;
     if(!title) throw new ApiError(400, "title not provided");
-    
     const videoFile = req.files?.video[0]?.path;
     if(!videoFile) throw new ApiError(401, "Please upload video");
-    console.log(videoFile);
     const thumbnailFile = req.files?.thumbnail[0]?.path;
     if(!thumbnailFile) throw new ApiError(401, "Please upload thumbnail");  
     const uploaded_video = await uploadOnCloudinary(videoFile);
     if(!uploaded_video.url) throw new ApiError(500, "something went wrong while uploading the video file to cloudinary");
-
     const thumbnail = await uploadOnCloudinary(thumbnailFile);
     if(!thumbnail.url) throw new ApiError(500, "something went wrong while uploading the video file to cloudinary");
-
     const video = await Video.create({videoFile: uploaded_video.url, thumbnail: thumbnail.url, title: title, description: description || "", duration: uploaded_video.duration, owner: user._id});
     if(!video) throw new ApiError(500, "something went wrong while uploding video to mongodb");
-
     return res
                 .status(200)
                 .json(new ApiResponse(200,  [video], "video uploaded successfully"));
@@ -91,16 +86,7 @@ const getFeed = asyncHandler(async (req, res) => {
                 .status(200)
                 .json(new ApiResponse(200, videoData, "Home feed fetched"));
 });
-const getSubscriberCount = asyncHandler(async (req, res) => {
-    const {channelId} = req.body;
-    if(!mongoose.Types.ObjectId.isValid(channelId)) throw new ApiError(400, "please enter select a channel");
-    const userId = req.user._id;
-    const subscriberCount = await Subscription.countDocuments({channel:new mongoose.Types.ObjectId(channelId)});
-    const isSubscribed = await Subscription.findOne({channel: new mongoose.Types.ObjectId(channelId), subscriber: new mongoose.Types.ObjectId(userId)}) || false;
-    return res
-                .status(200)
-                .json(new ApiResponse(200, {subscriberCount, isSubscribed}, "subscriberCount & subscribedStatus fetched successfully"));
-});
+
 const saveInHistory = asyncHandler(async (req, res) => {
     const {videoId} = req.body;
     if(!mongoose.Types.ObjectId.isValid(videoId)) throw new ApiError(400, "Invalid video");
@@ -117,4 +103,4 @@ const saveInHistory = asyncHandler(async (req, res) => {
                 .json(new ApiResponse(200,null, "video saved in history successfully"))
 });
 
-export {uploadVideo, changeThumbnail, getFeed, getSubscriberCount, saveInHistory, getVideo};
+export {uploadVideo, changeThumbnail, getFeed, saveInHistory, getVideo};
