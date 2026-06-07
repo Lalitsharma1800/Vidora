@@ -14,8 +14,8 @@ import {
         getChannelProfile,
         watchHistory
     } from "./../controllers/user.controller.js";
-import { uploadVideo, getFeed, saveInHistory, getSubscriberCount, changeThumbnail, getVideo } from "../controllers/video.controller.js";
-
+import { uploadVideo, getFeed, saveInHistory, changeThumbnail, getVideo } from "../controllers/video.controller.js";
+import { getSubscriberCountAndSubscribedStatus } from "../controllers/subscription.controller.js";
 
 const router = Router();
 
@@ -58,7 +58,7 @@ router.route("/uploadVideo").post(
                         );
 
 router.route("/save").post(verifyUser, saveInHistory);
-router.route("/home").post(verifyUser,getSubscriberCount);
+router.route("/home").post(verifyUser,getSubscriberCountAndSubscribedStatus);
 router.route("/getUser").get(verifyUser, getCurrentUser);
 router.route("/channel/:username").get(verifyUser, getChannelProfile);
 router.route("/history").get(verifyUser, watchHistory);
