@@ -53,4 +53,10 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, null, "Playlist deleted successfully"));
 });
 
-export { createPlaylist, addVideoToPlaylist, removeVideoFromPlaylist };
+const getUserPlaylists = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const playlists = await PlayList.find({user: userId}).populate("videos");
+    return res.status(200).json(new ApiResponse(200, playlists, "User playlists retrieved successfully"));
+});
+
+export {createPlaylist, addVideoToPlaylist, removeVideoFromPlaylist, deletePlaylist, getUserPlaylists};
