@@ -48,3 +48,34 @@ const editComment = asyncHandler(async (req, req) => {
             .status(200)
             .json(new ApiResponse(200, {comment_count: update_comment_count}, "comment edited successfully"));
 });
+
+const findComments = asyncHandler( async (req, res) => {
+    const {videoId} = req.body;
+    if(!mongoose.Types.ObjectId.isValid(videoId)) throw new ApiError(400,"video id is invalid");
+
+    const comments = await Video_Comment.aggregate([
+        {
+            $match: {videoId: new mongoose.Types.ObjectId(videoId)}
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField:"userId",
+                foreignField: "_id",
+                as: "user",
+                pipeline: [
+                        {
+                            $project: {
+                                userName: 1,
+                                avatar: 1,
+                                fullName: 1
+                            }
+                        },               
+                ]
+            }
+        },
+    ]);
+    return res
+            .status(200)
+            .json(new ApiResponse(200, comments, "comments fetched successfully"));
+});
