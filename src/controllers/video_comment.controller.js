@@ -36,7 +36,7 @@ const writeComment = asyncHandler(async (req, req) => {
 
 const editComment = asyncHandler(async (req, req) => {
     const {commentId, newComment} = req.body;
-    if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError("commentId is not invalid");
+    if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError(400, "commentId is not invalid");
     if(!newComment) throw new ApiError(400, "please enter a valid new comment");
     const user = req.user;
     const comment = await Video_Comment.findById(commentId);
