@@ -79,3 +79,4 @@ const findComments = asyncHandler( async (req, res) => {
             .status(200)
             .json(new ApiResponse(200, comments, "comments fetched successfully"));
 });
+export {writeComment, editComment, findComments};
