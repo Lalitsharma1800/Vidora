@@ -6,6 +6,8 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { LikeVideo } from "../model/like.model.js";
+import { Video_Comment } from "../model/video_comment.model.js";
+import {Comment_Reply} from "../model/comment_reply.model.js";
 
 const reactOnVideo = asyncHandler(async (req, res) => {
     // get the video id from req
@@ -88,7 +90,7 @@ const reactOnComment = asyncHandler(async (req, res) => {
     if(reaction !== "LIKE" && reaction !== "DISLIKE") throw new ApiError(400, "reaction required either LIKE or DISLIKE"); 
     if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError(400, "like & dislike only valid for comments");
     const user = req.user;
-    const comment = await Comment.findById(new mongoose.Types.ObjectId(commentId));
+    const comment = await Video_Comment.findById(new mongoose.Types.ObjectId(commentId));
     if(!comment) throw new ApiError(404, "Comment not found, Invalid comment Id");
         // start the session
     const session = await mongoose.startSession();
@@ -132,8 +134,60 @@ const reactOnComment = asyncHandler(async (req, res) => {
     }
 });
 
+
+
+const reactOnReply = asyncHandler(async (req, res) => {
+    const {replyId} = req.body;
+    const {reaction} = req.body;
+    if(reaction !== "LIKE" && reaction !== "DISLIKE") throw new ApiError(400, "reaction required either LIKE or DISLIKE"); 
+    if(!mongoose.Types.ObjectId.isValid(replyId)) throw new ApiError(400, "like & dislike only valid for replies");
+    const user = req.user;
+    const reply = await Comment_Reply.findById(new mongoose.Types.ObjectId(replyId));
+    if(!reply) throw new ApiError(404, "Reply not found, Invalid reply Id");
+        // start the session
+    const session = await mongoose.startSession();
+    try{
+        // start the transaction
+        await session.startTransaction();
+        const existing = await LikeComment.findOne({userId: user._id , commentId: reply._id}).session(session);
+        let reactOnComment; 
+        if(!existing){ // if reaction not existed
+             reactOnComment = await LikeComment.create([{"commentId" : reply._id, "userId" : user._id, "reaction" : reaction}], {session});
+             if(!reactOnComment) throw new ApiError(500, `something went wrong while first time reacting on the comment`);
+             const likeCount = (reaction === 'LIKE') ? await Comment_Reply.findByIdAndUpdate(reply._id, {$inc: {likes: 1}}, {returnDocument: "after", session: session}).select("likes disLikes")   : await Comment_Reply.findByIdAndUpdate(reply._id, {$inc: {disLikes: 1}}, {returnDocument: "after"}).select("likes disLikes").session(session) ;
+                await session.commitTransaction();
+                return res
+                        .status(200)
+                        .json(new ApiResponse(200, [reactOnComment,likeCount], "reaction successfully registered"));
+        }else{ // if reaction  existed
+            if(existing.reaction === reaction){ // if this reaction = registered reaction => user is neutral 
+                reactOnComment = await LikeComment.findByIdAndDelete(existing._id, {session}); 
+                if(!reactOnComment) throw new ApiError(500, `something wront went while deleting the reaction`);
+                const likeCount = (reaction === 'LIKE') ? await Comment_Reply.findByIdAndUpdate(reply._id, {$inc: {likes: -1}}, {returnDocument: "after", session: session}).select("likes disLikes") : await Comment_Reply.findByIdAndUpdate(reply._id, {$inc: {disLikes: -1}}, {returnDocument: "after", session: session}).select("likes disLikes") ;
+                await session.commitTransaction();
+                return res
+                        .status(200)
+                        .json(new ApiResponse(200, [reactOnComment,likeCount], "reaction successfully registered"));
+            }else{ // if this reaction != registered reaction => user changed his reaction  
+                reactOnComment = await LikeComment.findByIdAndUpdate(existing._id, {reaction}, {new: true, session});
+                if(!reactOnComment) throw new ApiError(500, `something went wrong while updating the reaction`);
+                const likeCount = (reaction === 'LIKE') ? await Comment_Reply.findByIdAndUpdate(reply._id, {$inc: {likes: 1, disLikes: -1}}, {returnDocument: "after", session: session}).select("likes disLikes") : await Comment_Reply.findByIdAndUpdate(reply._id, {$inc: {disLikes: 1, likes: -1}}, {returnDocument: "after", session: session}).select("likes disLikes") ;
+                await session.commitTransaction();
+                return res
+                        .status(200)
+                        .json(new ApiResponse(200, [reactOnComment,likeCount], "reaction successfully registered"));
+            }
+        }
+    }catch(error){
+        await session.abortTransaction();
+        throw new ApiError(500, "something went wrong while reacting on the reply");
+    }finally{
+        await session.endSession();
+    }
+});
+
 const reactStatusOnComments = asyncHandler(async (req, res) => {
-    const {commentId} = req.body;
+    const {commentId} = req.body; // for reply we change the commentId to replyId and change the model to likeReply
     if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError("Comment required");
 
     const user = req.user;
@@ -144,4 +198,4 @@ const reactStatusOnComments = asyncHandler(async (req, res) => {
             .json(new ApiResponse(200, existing, "reactStatusOnComments fetched successfully"));    
 });
 
-export {reactOnVideo, reactStatus, reactOnComment};
+export {reactOnVideo, reactStatus, reactOnComment, reactStatusOnComments, reactOnReply};
