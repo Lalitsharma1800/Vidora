@@ -78,3 +78,5 @@ const findReplies = asyncHandler( async (req, res) => {
             .status(200)
             .json(new ApiResponse(200, replies, "replies fetched successfully"));
 });
+
+export {writeReply, editReply, findReplies};
