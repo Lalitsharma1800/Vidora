@@ -72,12 +72,16 @@ const reactStatus = asyncHandler(async (req, res) => {
 
     const user = req.user;
     const existing = await LikeVideo.findOne({userId: user._id , videoId: new mongoose.Types.ObjectId(videoId)});
-    console.log(existing);
+
     return res
             .status(200)
             .json(new ApiResponse(200, existing, "reactStatus fetched successfully"));    
 });
-
+/**
+    * react on comment & reply  are the same in the logic but they are different in the model, so I will use the same logic of react on video with some changes to fit the comment model
+     * 1- I will check if the comment id is valid and exist or not 
+     * 2- I will check if the user already reacted on this comment or not
+ */
 const reactOnComment = asyncHandler(async (req, res) => {
     const {commentId} = req.body;
     const {reaction} = req.body;
@@ -126,6 +130,18 @@ const reactOnComment = asyncHandler(async (req, res) => {
     }finally{
         await session.endSession();
     }
+});
+
+const reactStatusOnComments = asyncHandler(async (req, res) => {
+    const {commentId} = req.body;
+    if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError("Comment required");
+
+    const user = req.user;
+    const existing = await LikeComment.findOne({userId: user._id , commentId: new mongoose.Types.ObjectId(commentId)});
+
+    return res
+            .status(200)
+            .json(new ApiResponse(200, existing, "reactStatusOnComments fetched successfully"));    
 });
 
 export {reactOnVideo, reactStatus, reactOnComment};
