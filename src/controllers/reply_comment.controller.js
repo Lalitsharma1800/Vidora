@@ -48,3 +48,33 @@ const editReply = asyncHandler(async (req, req) => {
             .status(200)
             .json(new ApiResponse(200, {newReply: edit_reply}, "reply edited successfully"));
 });
+const findReplies = asyncHandler( async (req, res) => {
+    const {commentId} = req.body;
+    if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError(400,"comment id is invalid");
+
+    const replies = await Comment_Reply.aggregate([
+        {
+            $match: {commentId: new mongoose.Types.ObjectId(commentId)}
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField:"userId",
+                foreignField: "_id",
+                as: "user",
+                pipeline: [
+                        {
+                            $project: {
+                                userName: 1,
+                                avatar: 1,
+                                fullName: 1
+                            }
+                        },               
+                ]
+            }
+        },
+    ]);
+    return res
+            .status(200)
+            .json(new ApiResponse(200, replies, "replies fetched successfully"));
+});
