@@ -1,0 +1,24 @@
+import mongoose, {Schema} from "mongoose";
+
+const playlistSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    videos: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Video",
+        }
+    ],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
+}, {timestamps: true}
+);
