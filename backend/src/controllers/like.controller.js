@@ -134,8 +134,6 @@ const reactOnComment = asyncHandler(async (req, res) => {
     }
 });
 
-
-
 const reactOnReply = asyncHandler(async (req, res) => {
     const {replyId} = req.body;
     const {reaction} = req.body;
