@@ -1,7 +1,6 @@
-# Backend-with-Node
-# Vidora
+# Vidora is a video-sharing platform inspired by modern streaming applications.
 
-Vidora is a video-sharing platform inspired by modern streaming applications. The project focuses on building a scalable backend architecture that supports video publishing, content discovery, user engagement, and account management.
+The project focuses on building a scalable backend architecture that supports video publishing, content discovery, user engagement, and account management.
 
 ## Features
 
