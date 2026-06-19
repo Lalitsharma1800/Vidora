@@ -52,7 +52,7 @@ export function SidebarInset({
     <main
       className={cn(
         'min-h-[calc(100vh-3.5rem)] transition-[margin] duration-300 ease-in-out',
-        collapsed ? 'md:ml-[72px]' : 'md:ml-60',
+        collapsed ? 'md:ml-18' : 'md:ml-60',
         className,
       )}
     >

@@ -9,9 +9,69 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WatchLaterRouteImport } from './routes/watch-later'
+import { Route as TrendingRouteImport } from './routes/trending'
+import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
+import { Route as ShortsRouteImport } from './routes/shorts'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PlaylistsRouteImport } from './routes/playlists'
+import { Route as MusicRouteImport } from './routes/music'
+import { Route as LikedRouteImport } from './routes/liked'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as GamingRouteImport } from './routes/gaming'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WatchLaterRoute = WatchLaterRouteImport.update({
+  id: '/watch-later',
+  path: '/watch-later',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrendingRoute = TrendingRouteImport.update({
+  id: '/trending',
+  path: '/trending',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubscriptionsRoute = SubscriptionsRouteImport.update({
+  id: '/subscriptions',
+  path: '/subscriptions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShortsRoute = ShortsRouteImport.update({
+  id: '/shorts',
+  path: '/shorts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaylistsRoute = PlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MusicRoute = MusicRouteImport.update({
+  id: '/music',
+  path: '/music',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LikedRoute = LikedRouteImport.update({
+  id: '/liked',
+  path: '/liked',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamingRoute = GamingRouteImport.update({
+  id: '/gaming',
+  path: '/gaming',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -26,31 +86,178 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/gaming': typeof GamingRoute
+  '/history': typeof HistoryRoute
+  '/liked': typeof LikedRoute
+  '/music': typeof MusicRoute
+  '/playlists': typeof PlaylistsRoute
+  '/settings': typeof SettingsRoute
+  '/shorts': typeof ShortsRoute
+  '/subscriptions': typeof SubscriptionsRoute
+  '/trending': typeof TrendingRoute
+  '/watch-later': typeof WatchLaterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/gaming': typeof GamingRoute
+  '/history': typeof HistoryRoute
+  '/liked': typeof LikedRoute
+  '/music': typeof MusicRoute
+  '/playlists': typeof PlaylistsRoute
+  '/settings': typeof SettingsRoute
+  '/shorts': typeof ShortsRoute
+  '/subscriptions': typeof SubscriptionsRoute
+  '/trending': typeof TrendingRoute
+  '/watch-later': typeof WatchLaterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/gaming': typeof GamingRoute
+  '/history': typeof HistoryRoute
+  '/liked': typeof LikedRoute
+  '/music': typeof MusicRoute
+  '/playlists': typeof PlaylistsRoute
+  '/settings': typeof SettingsRoute
+  '/shorts': typeof ShortsRoute
+  '/subscriptions': typeof SubscriptionsRoute
+  '/trending': typeof TrendingRoute
+  '/watch-later': typeof WatchLaterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/gaming'
+    | '/history'
+    | '/liked'
+    | '/music'
+    | '/playlists'
+    | '/settings'
+    | '/shorts'
+    | '/subscriptions'
+    | '/trending'
+    | '/watch-later'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/gaming'
+    | '/history'
+    | '/liked'
+    | '/music'
+    | '/playlists'
+    | '/settings'
+    | '/shorts'
+    | '/subscriptions'
+    | '/trending'
+    | '/watch-later'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/gaming'
+    | '/history'
+    | '/liked'
+    | '/music'
+    | '/playlists'
+    | '/settings'
+    | '/shorts'
+    | '/subscriptions'
+    | '/trending'
+    | '/watch-later'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  GamingRoute: typeof GamingRoute
+  HistoryRoute: typeof HistoryRoute
+  LikedRoute: typeof LikedRoute
+  MusicRoute: typeof MusicRoute
+  PlaylistsRoute: typeof PlaylistsRoute
+  SettingsRoute: typeof SettingsRoute
+  ShortsRoute: typeof ShortsRoute
+  SubscriptionsRoute: typeof SubscriptionsRoute
+  TrendingRoute: typeof TrendingRoute
+  WatchLaterRoute: typeof WatchLaterRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/watch-later': {
+      id: '/watch-later'
+      path: '/watch-later'
+      fullPath: '/watch-later'
+      preLoaderRoute: typeof WatchLaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trending': {
+      id: '/trending'
+      path: '/trending'
+      fullPath: '/trending'
+      preLoaderRoute: typeof TrendingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subscriptions': {
+      id: '/subscriptions'
+      path: '/subscriptions'
+      fullPath: '/subscriptions'
+      preLoaderRoute: typeof SubscriptionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shorts': {
+      id: '/shorts'
+      path: '/shorts'
+      fullPath: '/shorts'
+      preLoaderRoute: typeof ShortsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playlists': {
+      id: '/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof PlaylistsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/music': {
+      id: '/music'
+      path: '/music'
+      fullPath: '/music'
+      preLoaderRoute: typeof MusicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/liked': {
+      id: '/liked'
+      path: '/liked'
+      fullPath: '/liked'
+      preLoaderRoute: typeof LikedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gaming': {
+      id: '/gaming'
+      path: '/gaming'
+      fullPath: '/gaming'
+      preLoaderRoute: typeof GamingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -71,6 +278,16 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  GamingRoute: GamingRoute,
+  HistoryRoute: HistoryRoute,
+  LikedRoute: LikedRoute,
+  MusicRoute: MusicRoute,
+  PlaylistsRoute: PlaylistsRoute,
+  SettingsRoute: SettingsRoute,
+  ShortsRoute: ShortsRoute,
+  SubscriptionsRoute: SubscriptionsRoute,
+  TrendingRoute: TrendingRoute,
+  WatchLaterRoute: WatchLaterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

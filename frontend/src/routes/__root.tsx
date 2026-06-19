@@ -5,7 +5,8 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-import {Navbar} from "#/components/layout/navbar/Navbar";
+
+import { AppShell } from '#/components/layout/app-shell.tsx'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -51,8 +52,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased wrap-anywhere selection:bg-[rgba(79,184,178,0.24)]">
-        <Navbar />
-        {children}
+        <AppShell>{children}</AppShell>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
