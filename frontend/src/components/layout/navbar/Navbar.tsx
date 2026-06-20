@@ -81,7 +81,7 @@ export function Navbar() {
               <span className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
                 <Play className="size-4 fill-current" />
               </span>
-              <span className="text-lg font-bold tracking-tight">VIDORA</span>
+              <span className="text-lg font-extrabold tracking-tight text-blue-700">VIDORA</span>
             </a>
           </div>
         )}

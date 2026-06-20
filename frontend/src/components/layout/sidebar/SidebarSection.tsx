@@ -15,7 +15,7 @@ export function SidebarSection({
   return (
     <>
       <div role="group" aria-label={section.id}>
-        <ul className="flex flex-col gap-0.5 px-3 py-2">
+        <ul className="flex flex-col gap-0.5 px-3 py-2 ">
           {section.items.map((item) => (
             <SidebarItem key={item.id} item={item} collapsed={collapsed} />
           ))}

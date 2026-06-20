@@ -13,9 +13,9 @@ interface AppShellProps {
 export function AppShell({ children }: AppShellProps) {
   return (
     <TooltipProvider delay={300}>
-      <div className="min-h-screen bg-background text-foreground">
+      <div className="min-h-screen bg-background text-white">
         <Navbar />
-        <Sidebar />
+        <Sidebar/>
         <SidebarInset>{children}</SidebarInset>
       </div>
     </TooltipProvider>
