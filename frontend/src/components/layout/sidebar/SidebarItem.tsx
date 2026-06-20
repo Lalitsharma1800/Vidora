@@ -40,7 +40,7 @@ export function SidebarItem({ item, collapsed = false }: SidebarItemProps) {
               />
               <span
                 className={cn(
-                  'truncate  ', item.isActive && 'font-bold',
+                  'truncate  ', item.id === activeSidebar && 'font-bold',
                   collapsed && 'sr-only',
                 )}
               >

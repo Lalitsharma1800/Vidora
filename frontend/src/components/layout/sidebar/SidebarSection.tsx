@@ -25,7 +25,7 @@ export function SidebarSection({
         <div
           role="separator"
           aria-hidden="true"
-          className="mx-3 my-1 border-t border-sidebar-border"
+          className="my-1 border-t border-neutral-500"
         />
       ) : null}
     </>

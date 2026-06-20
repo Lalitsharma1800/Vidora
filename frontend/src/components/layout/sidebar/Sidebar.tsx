@@ -17,8 +17,8 @@ export function Sidebar({ collapsed = false, className }: SidebarProps) {
       aria-label="Primary navigation"
       data-collapsed={collapsed ? 'true' : 'false'}
       className={cn(
-        'fixed left-0 top-14 z-40 hidden h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain border-r border-sidebar-border bg-sidebar text-white transition-[width] duration-300 ease-in-out md:flex',
-        collapsed ? 'w-0' : 'w-60',
+        'bg-black fixed left-0 top-14 z-40 h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:hidden border-r text-white transition-[width] duration-300 ease-in-out md:flex',
+        collapsed ? 'w-0 md:w-18' : 'w-60',
         className,
       )}
     >
@@ -52,7 +52,7 @@ export function SidebarInset({
     <main
       className={cn(
         'min-h-[calc(100vh-3.5rem)] transition-[margin] duration-300 ease-in-out text-white',
-        collapsed ? 'md:ml-18' : 'md:ml-60',
+        `${collapsed ? 'md:ml-18' : 'md:ml-60'}`,
         className,
       )}
     >

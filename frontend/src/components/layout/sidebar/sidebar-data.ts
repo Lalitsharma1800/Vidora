@@ -14,7 +14,6 @@ import {
   ThumbsUp,
   Trophy,
   TvMinimalPlay,
-  Zap,
 } from 'lucide-react'
 
 export interface SidebarItemData {
@@ -39,8 +38,7 @@ export const sidebarSections: SidebarSectionData[] = [
   {
     id: 'primary',
     items: [
-      { id: 'home', label: 'Home', href: '/', icon: Home, isActive: true },
-      { id: 'shorts', label: 'Shorts', href: '/shorts', icon: Zap },
+      { id: 'home', label: 'Home', href: '/', icon: Home},
       {
         id: 'subscriptions',
         label: 'Subscriptions',
