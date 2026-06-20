@@ -9,14 +9,16 @@ import { Sidebar, SidebarInset } from './sidebar/Sidebar.tsx';
 interface AppShellProps {
   children: ReactNode
 }
+import { useSidebarCollapseStore } from '#/zustand/sidebarStore/useSidebarCollapsedState.ts';
 
 export function AppShell({ children }: AppShellProps) {
+  const is_collapsed = useSidebarCollapseStore(state => state.isCollapsed);
   return (
     <TooltipProvider delay={300}>
-      <div className="min-h-screen bg-background text-white">
-        <Navbar />
-        <Sidebar/>
-        <SidebarInset>{children}</SidebarInset>
+      <div className="min-h-screen bg-background">
+        <Navbar/>
+        <Sidebar collapsed={is_collapsed}/>
+        <SidebarInset collapsed={is_collapsed}>{children}</SidebarInset>
       </div>
     </TooltipProvider>
   )

@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-// import { useTheme } from "next-themes"
+import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   Bell,
   Menu,
@@ -35,34 +35,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useSidebarCollapseStore } from "#/zustand/sidebarStore/useSidebarCollapsedState";
 
-// function ThemeToggle() {
-//   const { theme, setTheme } = useTheme()
-
-//   return (
-//     <Tooltip>
-//       <TooltipTrigger
-//         render={
-//           <Button
-//             variant="ghost"
-//             size="icon"
-//             className="rounded-full border border-foreground/20 dark:border-transparent"
-//             aria-label="Toggle theme"
-//             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-//           />
-//         }
-//       >
-//         <Sun className="size-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-//         <Moon className="absolute size-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-//       </TooltipTrigger>
-//       <TooltipContent>Toggle theme</TooltipContent>
-//     </Tooltip>
-//   )
-// }
 
 export function Navbar() {
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
-
+  const toggle_sidebar = useSidebarCollapseStore(state => state.toggleSidebar);
+  const onClickHandler = () => {
+    toggle_sidebar()};
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="flex h-14 items-center gap-2 px-3 sm:gap-4 sm:px-4">
@@ -72,17 +52,18 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full border border-foreground/20 dark:border-transparent"
+              className="rounded-full border border-foreground/20 dark:border-transparent hover:cursor-pointer"
               aria-label="Open menu"
+              onClick={onClickHandler}
             >
               <Menu className="size-5" />
             </Button>
-            <a href="/" className="flex items-center gap-1.5" aria-label="VIDORA home">
-              <span className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
-                <Play className="size-4 fill-current" />
+            <Link to="/" className="flex items-center gap-1.5" aria-label="VIDORA home">
+              <span className="flex size-7 items-center justify-center rounded-full bg-white">
+                <Play className="size-4 fill-current text-blue-700 rounded-full" />
               </span>
-              <span className="text-lg font-extrabold tracking-tight text-blue-700">VIDORA</span>
-            </a>
+              <span className="text-lg font-bold tracking-tight text-blue-700">VIDORA</span>
+            </Link>
           </div>
         )}
 
