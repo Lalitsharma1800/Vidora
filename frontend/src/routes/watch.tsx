@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import VideoPlayer from './../components/youtube/VideoPlayer.tsx';
 import VideoDetails from './../components/youtube/VideoDetails.tsx';
