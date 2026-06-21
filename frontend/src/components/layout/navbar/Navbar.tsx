@@ -44,7 +44,7 @@ export function Navbar() {
   const onClickHandler = () => {
     toggle_sidebar()};
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-border bg-black backdrop-blur supports-backdrop-filter:bg-background/80">
+    <header className="fixed top-0 z-50 w-full border-b border-border bg-zinc-950 backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="flex h-14 items-center gap-2 px-3 sm:gap-4 sm:px-4">
         {/* Left: menu + logo */}
         {!mobileSearchOpen && (
@@ -168,7 +168,7 @@ export function Navbar() {
                 }
               >
                 <Bell className="size-5" />
-                <span className="bg-black absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full border-2 text-[9px] font-semibold leading-none text-white">
+                <span className="absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full  text-[9px] font-semibold leading-none text-white bg-red-600">
                   3
                 </span>
               </TooltipTrigger>

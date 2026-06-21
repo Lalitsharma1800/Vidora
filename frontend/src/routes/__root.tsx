@@ -65,7 +65,7 @@ function RootDocument({children} : {children: React.ReactNode}) {
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent/>
       </head>
-      <body className="relative top-0 h-screen w-full  selection:bg-[rgba(30,39,199,0.57)] ">
+      <body className="relative top-0 h-screen w-full bg-zinc-900  selection:bg-[rgba(30,39,199,0.57)] ">
         <AppShell>
           {children}
         </AppShell>

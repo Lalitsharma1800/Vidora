@@ -17,7 +17,7 @@ export function Sidebar({ collapsed = false, className }: SidebarProps) {
       aria-label="Primary navigation"
       data-collapsed={collapsed ? 'true' : 'false'}
       className={cn(
-        'bg-black fixed left-0 top-14 z-40 h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:hidden border-r text-white transition-[width] duration-300 ease-in-out md:flex',
+        ' bg-zinc-900 fixed left-0 top-14 z-40 h-[calc(100vh-3.5rem)] flex-col overflow-y-auto overscroll-contain [&::-webkit-scrollbar]:hidden border-r text-white transition-[width] duration-300 ease-in-out md:flex',
         collapsed ? 'w-0 md:w-18' : 'w-60',
         className,
       )}
