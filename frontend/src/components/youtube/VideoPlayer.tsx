@@ -39,7 +39,7 @@ export default function VideoPlayer() {
             
             {/* Video Controls */}
             <div className="flex items-center gap-2">
-                    {/* duration */}
+                    
                     {/* red line */}
                 <div className="flex-1 h-1 bg-zinc-700 rounded-full cursor-pointer">
                     <div
