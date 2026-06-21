@@ -15,10 +15,10 @@ export function AppShell({ children }: AppShellProps) {
   const is_collapsed = useSidebarCollapseStore(state => state.isCollapsed);
   return (
     <TooltipProvider delay={300}>
-      <div className="min-h-screen bg-background relative">
+      <div className="min-h-screen">
         <Navbar/>
-        <Sidebar collapsed={is_collapsed}/>
-        <SidebarInset collapsed={is_collapsed}>{children}</SidebarInset>
+        <Sidebar collapsed={is_collapsed} className=''/>
+        <SidebarInset collapsed={is_collapsed} className='bg-zinc-900'>{children}</SidebarInset>
       </div>
     </TooltipProvider>
   )
