@@ -61,7 +61,7 @@ const getVideo = asyncHandler(async (req, res) => {
 const getFeed = asyncHandler(async (req, res) => {
     const videoData = await Video.aggregate([
         {
-            $match: {published: true}
+            $match: {isPublished: true}
         },
         {
             $lookup: {
