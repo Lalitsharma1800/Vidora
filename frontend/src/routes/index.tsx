@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { NavPlaceholderPage } from '#/components/pages/nav-placeholder-page.tsx'
+import { VideoGrid } from '#/components/layout/video'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -8,9 +8,6 @@ export const Route = createFileRoute('/')({
 
 function HomePage() {
   return (
-    <NavPlaceholderPage
-      title="Home"
-      description="Discover videos from creators you follow and recommendations tailored for you."
-    />
+    <VideoGrid/>
   )
 }

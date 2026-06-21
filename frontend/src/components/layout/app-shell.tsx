@@ -15,7 +15,7 @@ export function AppShell({ children }: AppShellProps) {
   const is_collapsed = useSidebarCollapseStore(state => state.isCollapsed);
   return (
     <TooltipProvider delay={300}>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background relative">
         <Navbar/>
         <Sidebar collapsed={is_collapsed}/>
         <SidebarInset collapsed={is_collapsed}>{children}</SidebarInset>

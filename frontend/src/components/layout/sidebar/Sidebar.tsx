@@ -51,7 +51,7 @@ export function SidebarInset({
   return (
     <main
       className={cn(
-        'min-h-[calc(100vh-3.5rem)] transition-[margin] duration-300 ease-in-out text-white',
+        'pt-14 min-h-screen transition-[margin] duration-300 ease-in-out text-white',
         `${collapsed ? 'md:ml-18' : 'md:ml-60'}`,
         className,
       )}

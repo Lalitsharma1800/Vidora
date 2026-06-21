@@ -44,7 +44,7 @@ export function Navbar() {
   const onClickHandler = () => {
     toggle_sidebar()};
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+    <header className="fixed top-0 z-50 w-full border-b border-border bg-black backdrop-blur supports-backdrop-filter:bg-background/80">
       <div className="flex h-14 items-center gap-2 px-3 sm:gap-4 sm:px-4">
         {/* Left: menu + logo */}
         {!mobileSearchOpen && (
@@ -95,7 +95,7 @@ export function Navbar() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="ml-3 size-10 shrink-0 rounded-full border border-foreground/20 bg-secondary text-foreground hover:bg-secondary/80 dark:border-transparent"
+                  className="ml-3 size-10 shrink-0 rounded-full border border-foreground/20 hover:bg-neutral-500 dark:border-transparent"
                   aria-label="Search with voice"
                 />
               }
@@ -127,10 +127,10 @@ export function Navbar() {
               type="search"
               placeholder="Search"
               autoFocus
-              className="h-10 flex-1 rounded-full"
+              className="h-10 flex-1 rounded-full border-t outline-none"
               aria-label="Search"
             />
-            <Button type="submit" size="icon" variant="secondary" className="rounded-full border border-foreground/20 dark:border-transparent" aria-label="Submit search">
+            <Button type="submit" size="icon" variant="secondary" className="rounded-full border border-foreground/20 dark:border-transparent " aria-label="Submit search">
               <Search className="size-5" />
             </Button>
           </form>
@@ -143,7 +143,7 @@ export function Navbar() {
             <Button
               variant="ghost"
               size="icon"
-              className="rounded-full border border-foreground/20 md:hidden dark:border-transparent"
+              className="rounded-full md:hidden dark:border-transparent"
               onClick={() => setMobileSearchOpen(true)}
               aria-label="Open search"
             >
@@ -153,7 +153,7 @@ export function Navbar() {
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Button variant="ghost" size="icon" className="rounded-full border border-foreground/20 dark:border-transparent" aria-label="Upload video" />
+                  <Button variant="ghost" size="icon" className="rounded-full border dark:border-transparent hidden md:flex hover:bg-neutral-600" aria-label="Upload video" />
                 }
               >
                 <Upload className="size-5" />
@@ -164,11 +164,11 @@ export function Navbar() {
             <Tooltip>
               <TooltipTrigger
                 render={
-                  <Button variant="ghost" size="icon" className="relative rounded-full border border-foreground/20 dark:border-transparent" aria-label="Notifications" />
+                  <Button variant="ghost" size="icon" className="relative rounded-full dark:border-transparent" aria-label="Notifications" />
                 }
               >
                 <Bell className="size-5" />
-                <span className="absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full border-2 border-background bg-destructive text-[9px] font-semibold leading-none text-white">
+                <span className="bg-black absolute right-0.5 top-0.5 flex size-4 items-center justify-center rounded-full border-2 text-[9px] font-semibold leading-none text-white">
                   3
                 </span>
               </TooltipTrigger>
@@ -183,12 +183,12 @@ export function Navbar() {
                   <button className="ml-1 rounded-full border border-foreground/20 outline-none ring-ring focus-visible:ring-2 dark:border-transparent" aria-label="Account menu" />
                 }
               >
-                <Avatar className="size-8">
+                <Avatar className="size-8 bg-blue-900">
                   <AvatarImage src="/diverse-avatars.png" alt="User avatar" />
                   <AvatarFallback>VD</AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-56 bg-black">
                 <div className="flex flex-col px-1.5 py-1">
                   <span className="text-sm font-semibold">Alex Rivera</span>
                   <span className="text-xs text-muted-foreground">@alexrivera</span>
