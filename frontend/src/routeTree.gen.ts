@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WatchLaterRouteImport } from './routes/watch-later'
+import { Route as WatchRouteImport } from './routes/watch'
 import { Route as TrendingRouteImport } from './routes/trending'
 import { Route as SubscriptionsRouteImport } from './routes/subscriptions'
 import { Route as ShortsRouteImport } from './routes/shorts'
@@ -25,6 +26,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const WatchLaterRoute = WatchLaterRouteImport.update({
   id: '/watch-later',
   path: '/watch-later',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchRoute = WatchRouteImport.update({
+  id: '/watch',
+  path: '/watch',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrendingRoute = TrendingRouteImport.update({
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/shorts': typeof ShortsRoute
   '/subscriptions': typeof SubscriptionsRoute
   '/trending': typeof TrendingRoute
+  '/watch': typeof WatchRoute
   '/watch-later': typeof WatchLaterRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/shorts': typeof ShortsRoute
   '/subscriptions': typeof SubscriptionsRoute
   '/trending': typeof TrendingRoute
+  '/watch': typeof WatchRoute
   '/watch-later': typeof WatchLaterRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/shorts': typeof ShortsRoute
   '/subscriptions': typeof SubscriptionsRoute
   '/trending': typeof TrendingRoute
+  '/watch': typeof WatchRoute
   '/watch-later': typeof WatchLaterRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/shorts'
     | '/subscriptions'
     | '/trending'
+    | '/watch'
     | '/watch-later'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/shorts'
     | '/subscriptions'
     | '/trending'
+    | '/watch'
     | '/watch-later'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/shorts'
     | '/subscriptions'
     | '/trending'
+    | '/watch'
     | '/watch-later'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   ShortsRoute: typeof ShortsRoute
   SubscriptionsRoute: typeof SubscriptionsRoute
   TrendingRoute: typeof TrendingRoute
+  WatchRoute: typeof WatchRoute
   WatchLaterRoute: typeof WatchLaterRoute
 }
 
@@ -193,6 +206,13 @@ declare module '@tanstack/react-router' {
       path: '/watch-later'
       fullPath: '/watch-later'
       preLoaderRoute: typeof WatchLaterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watch': {
+      id: '/watch'
+      path: '/watch'
+      fullPath: '/watch'
+      preLoaderRoute: typeof WatchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trending': {
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShortsRoute: ShortsRoute,
   SubscriptionsRoute: SubscriptionsRoute,
   TrendingRoute: TrendingRoute,
+  WatchRoute: WatchRoute,
   WatchLaterRoute: WatchLaterRoute,
 }
 export const routeTree = rootRouteImport
