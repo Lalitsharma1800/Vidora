@@ -5,11 +5,13 @@ const CommentReplySchema = new Schema(
                     {
                         commentId: {
                             type: mongoose.Types.ObjectId,
-                            required: true
+                            required: true,
+                            ref: "Video_Comment"
                         },
                         userId: {
                             type: mongoose.Types.ObjectId,
-                            required: true
+                            required: true,
+                            ref: "User"
                         },
                         likes: {
                             type: Number,

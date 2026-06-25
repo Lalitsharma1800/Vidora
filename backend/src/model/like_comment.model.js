@@ -6,11 +6,13 @@ const likeCommentSchema = new Schema(
                     {
                         commentId: {
                             type: mongoose.Types.ObjectId,
-                            required: true
+                            required: true,
+                            ref: "Video_Comment"
                         },
                         userId: {
                             type: mongoose.Types.ObjectId,
-                            required: true
+                            required: true,
+                            ref: "User"
                         },
                         reaction: {
                             type: String,

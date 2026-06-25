@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "test",
-    "start": "node --watch --env-file=.env src/index.js"
+    "start": "node --watch --env-file=.env src/index.js",
+    "seed_create_user": "node --env-file=.env scripts/register_user.js",
+    "seed_create_subscribe": "node --env-file=.env scripts/seed_subscribe.js"
   },
   "author": "Lalit Sharma",
   "license": "ISC",
