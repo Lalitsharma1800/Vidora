@@ -9,7 +9,7 @@ export function NavPlaceholderPage({
 }: NavPlaceholderPageProps) {
   return (
     <div className="px-4 py-6 sm:px-6">
-      <div className="mx-auto max-w-5xl">
+      <div className="mx-auto max-w-7xl">
         <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">
           {title}
         </h1>

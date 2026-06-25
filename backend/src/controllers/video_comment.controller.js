@@ -6,7 +6,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "./../utils/apiError.js";
 import {ApiResponse} from "./../utils/apiResponse.js";
 
-const writeComment = asyncHandler(async (req, req) => {
+const writeComment = asyncHandler(async (req, res) => {
     const {videoId} = req.body;
     if(!mongoose.Types.ObjectId.isValid(videoId)) throw new ApiError(400,"video id is invalid");
     const {comment} = req.body;
@@ -34,7 +34,7 @@ const writeComment = asyncHandler(async (req, req) => {
     }
 });
 
-const editComment = asyncHandler(async (req, req) => {
+const editComment = asyncHandler(async (req, res) => {
     const {commentId, newComment} = req.body;
     if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError(400, "commentId is not invalid");
     if(!newComment) throw new ApiError(400, "please enter a valid new comment");

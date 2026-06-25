@@ -4,7 +4,7 @@ import {
     writeComment,
     editComment,
     findComments,
-} from "../controllers/comment.controller.js";
+} from "../controllers/video_comment.controller.js";
 import {
     writeReply,
     editReply,

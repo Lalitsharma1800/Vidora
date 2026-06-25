@@ -7,7 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "./../utils/apiError.js";
 import {ApiResponse} from "./../utils/apiResponse.js";
 
-const writeReply = asyncHandler(async (req, req) => {
+const writeReply = asyncHandler(async (req, res) => {
     const {commentId, reply} = req.body;
     if(!mongoose.Types.ObjectId.isValid(commentId)) throw new ApiError("comment id is invalid");
     const user = req.user;
@@ -34,7 +34,7 @@ const writeReply = asyncHandler(async (req, req) => {
     }
 });
 
-const editReply = asyncHandler(async (req, req) => {
+const editReply = asyncHandler(async (req, res) => {
     const {replyId, edited_reply} = req.body;
     const user = req.user;
     if(!mongoose.Types.ObjectId.isValid(replyId)) throw new ApiError("reply id is invalid");
