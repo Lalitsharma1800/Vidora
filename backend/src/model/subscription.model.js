@@ -6,11 +6,11 @@ const subscriptionSchema = new Schema(
         {
             subscriber: {    // jisne subscribe kiya
                 type: Schema.Types.ObjectId,
-                ref: User
+                ref: "User"
             },
             channel: {      // jisko subscribe kiya
                 type: Schema.Types.ObjectId,
-                ref: User
+                ref: "User"
             }
         });
 

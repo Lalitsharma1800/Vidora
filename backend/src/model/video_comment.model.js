@@ -5,11 +5,13 @@ const videoCommentSchema = new Schema(
                     {
                         videoId: {
                             type: mongoose.Types.ObjectId,
-                            required: true
+                            required: true,
+                            ref: "Video"
                         },
                         userId: {
                             type: mongoose.Types.ObjectId,
-                            required: true
+                            required: true,
+                            ref: "User"
                         },
                         likes: {
                             type: Number,

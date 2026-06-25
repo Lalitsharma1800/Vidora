@@ -28,10 +28,11 @@ const userSchema = new Schema(
             },
             avatar: {
                 type: String, // cloudinary url
-                required: true
+                default: ""
             },
             coverImage: {
-                type: String
+                type: String,
+                default: ""
             },
             password: {
                 type: String,
@@ -44,6 +45,18 @@ const userSchema = new Schema(
             subscribedToCount: {
                 type: Number,
                 default: 0
+            },
+            totalVideos:{
+                type: Number,
+                default: 0
+            },
+            totalViews:{
+                type: Number,
+                default: 0
+            },
+            joinedAt:{
+                type: Date,
+                default: Date.now
             },
             refreshToken: {
                 type: String
