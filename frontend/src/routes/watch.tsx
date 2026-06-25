@@ -1,10 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react';
 import { MessageCircle, X } from 'lucide-react';
-import VideoPlayer from './../components/youtube/VideoPlayer.tsx';
-import VideoDetails from './../components/youtube/VideoDetails.tsx';
-import CommentsSection from './../components/youtube/CommentsSection.tsx';
-import RecommendedVideos from './../components/youtube/RecommendedVideos.tsx';
+import VideoPlayer from '../components/layout/video/VideoPlayer.tsx';
+import VideoDetails from '../components/layout/video/VideoDetails.tsx';
+import CommentsSection from '../components/layout/video/CommentsSection.tsx';
+import RecommendedVideos from '../components/layout/video/RecommendedVideos.tsx';
 
 export const Route = createFileRoute('/watch')({
   component: Watch,
@@ -45,7 +45,7 @@ function Watch() {
         </div>
 
         {/* Recommended Videos Sidebar - Desktop Only */}
-        <div className="hidden lg:block w-72 xl:w-80 flex-shrink-0">
+        <div className="hidden lg:block w-72 xl:w-80 shrink-0">
           <h2 className="text-lg font-bold text-white mb-4">Recommended</h2>
           <RecommendedVideos />
         </div>

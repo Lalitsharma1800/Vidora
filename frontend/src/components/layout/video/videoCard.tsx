@@ -1,6 +1,6 @@
 'use client'
 
-import { Play } from 'lucide-react'
+import { Play,   User } from 'lucide-react'
 import { useState } from 'react'
 
 export interface VideoCardProps {
@@ -60,7 +60,7 @@ export function VideoCard({
     if (onClick) {
       onClick()
     } else {
-      window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank')
+      
     }
   }
 
@@ -87,7 +87,7 @@ export function VideoCard({
           <img
             src={thumbnailUrl}
             alt={title}
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-300"
             loading="lazy"
           />
 
@@ -97,8 +97,8 @@ export function VideoCard({
               isHovered ? 'opacity-100' : 'opacity-0'
             }`}
           >
-            <div className="flex items-center justify-center rounded-full bg-white/90 p-4 transition-transform duration-300 group-hover:scale-110">
-              <Play className="h-6 w-6 fill-red-600 text-red-600" />
+            <div className="flex items-center justify-center rounded-full bg-olive-600 p-2 transition-transform duration-300 group-hover:scale-110">
+              <Play className="h-6 w-6 fill-blue-800 text-blue-800" />
             </div>
           </div>
 
