@@ -163,7 +163,6 @@ export function VideoGrid({ videos }: VideoGridProps) {
     },
 
   ]
-  console.log(demoVideos[0].thumbnail)
   return (
     <div className="w-full px-3  mt-4">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
