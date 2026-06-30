@@ -4,8 +4,8 @@ import type { ReactNode } from 'react'
 
 import { TooltipProvider } from '#/components/ui/tooltip.tsx'
 
-import { Navbar } from './navbar/Navbar.tsx'
-import { Sidebar, SidebarInset } from './sidebar/Sidebar.tsx';
+import { Navbar } from '../navbar/Navbar.tsx'
+import { Sidebar, SidebarInset } from '../sidebar/Sidebar.tsx';
 interface AppShellProps {
   children: ReactNode
 }

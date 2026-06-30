@@ -1,18 +1,20 @@
-import { HeadContent, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
+import {
+  HeadContent,
+  Scripts,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { TanStackDevtools } from "@tanstack/react-devtools";
+import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 
 import appCss from "./../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { AppShell } from "#/components/layout/app-shell";
+import { AppShell } from "#/components/layout/Appshell/app-shell";
 
 interface MyRouterContext {
-  queryClient: QueryClient
-};
-
-
+  queryClient: QueryClient;
+}
 
 const THEME_INIT_SCRIPT = `
 (
@@ -32,25 +34,25 @@ function(){
     root.style.colorScheme=resolved;
     }catch(e)
     {}
-    })();`
+    })();`;
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
       },
       {
-        title: 'Vidora',
+        title: "Vidora",
       },
     ],
     links: [
       {
-        rel: 'stylesheet',
+        rel: "stylesheet",
         href: appCss,
       },
     ],
@@ -58,31 +60,29 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   shellComponent: RootDocument,
 });
 
-function RootDocument({children} : {children: React.ReactNode}) {
+function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en"  suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
-        <HeadContent/>
+        <HeadContent />
       </head>
       <body className="relative top-0 h-screen w-full bg-zinc-900  selection:bg-[rgba(30,39,199,0.57)] ">
-        <AppShell>
-          {children}
-        </AppShell>
+        <AppShell>{children}</AppShell>
         <TanStackDevtools
           config={{
-            position: 'bottom-right',
+            position: "bottom-right",
           }}
           plugins={[
             {
-              name: 'Tanstack Router',
+              name: "Tanstack Router",
               render: <TanStackRouterDevtoolsPanel />,
             },
             TanStackQueryDevtools,
           ]}
         />
-        <Scripts/>
+        <Scripts />
       </body>
     </html>
-  )
-};
+  );
+}
