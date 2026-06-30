@@ -116,4 +116,4 @@ const getFeed = asyncHandler(async (req, res) => {
 
 
 
-export {upload_video, upload_thumbnail, getFeed, saveInHistory, getVideo};
+export {upload_video, upload_thumbnail, getFeed, getVideo};

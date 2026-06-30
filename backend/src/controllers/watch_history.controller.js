@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import { ApiResponse } from "../utils/apiResponse";
-import { ApiError } from "../utils/apiError";
-import { asyncHandler } from "../utils/asyncHandler";
-import { WatchHistory } from "../model/watchhistory.model";
+import { ApiResponse } from "../utils/apiResponse.js";
+import { ApiError } from "../utils/apiError.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { WatchHistory } from "../model/watchhistory.model.js";
 
 export const saveInHistory = asyncHandler(async (req, res) => {
     const {videoId} = req.body;

@@ -81,4 +81,4 @@ const upload_Thumbnail_To_Cloudinary = async (bufferChunk, public_id) => {
         throw error;
     }
 };
-export {uploadOnCloudinary, uploadVideoOnCloudinary, uploadChunkToCloudinary, upload_Thumbnail_To_Cloudinary};
+export {uploadOnCloudinary, uploadChunkToCloudinary, upload_Thumbnail_To_Cloudinary};
