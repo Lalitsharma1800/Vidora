@@ -6,6 +6,6 @@ interface SidebarState {
 }
 
 export const useSidebarStore = create<SidebarState>((set) => ({
-  activeSidebar: 'home',
+  activeSidebar: '',
   setActiveSidebar: (sidebar: String) => set({ activeSidebar: sidebar }), 
 }));

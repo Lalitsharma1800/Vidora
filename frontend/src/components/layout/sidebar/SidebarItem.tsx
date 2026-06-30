@@ -11,12 +11,13 @@ export interface SidebarItemProps {
 export function SidebarItem({ item, collapsed = false }: SidebarItemProps) {
   const Icon = item.icon
   const activeSidebar = useSidebarStore((state) => state.activeSidebar);
-  const setActiveSidebar = useSidebarStore((state) => state.setActiveSidebar);
-  const onClickHandler = (sidebar : String) => {
-          setActiveSidebar(sidebar);    
-  };
+  // const setActiveSidebar = useSidebarStore((state) => state.setActiveSidebar);
+  // const onClickHandler = (sidebar : String) => {
+  //         setActiveSidebar(sidebar);    
+  // };
   return (
-    <li onClick={() => onClickHandler(item.id)}>
+    // onClick={() => onClickHandler(item.id)}
+    <li>
           <Link
             to={item.href}
             aria-label={item.label}

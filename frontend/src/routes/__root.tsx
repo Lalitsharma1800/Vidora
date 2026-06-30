@@ -10,7 +10,8 @@ import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "./../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
-import { AppShell } from "#/components/layout/Appshell/app-shell";
+import { AppShell } from "#/components/layout/Appshell/app-shell.tsx";
+import { useSidebarStore } from "#/zustand/sidebarStore/useSidebar";
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -61,6 +62,10 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 });
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+
+  const setActiveSidebar = useSidebarStore((state) => state.setActiveSidebar);
+  setActiveSidebar('home');
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
