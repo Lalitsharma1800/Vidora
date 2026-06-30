@@ -1,7 +1,7 @@
 import type { SidebarItemData } from './sidebar-data.ts';
 import { Link } from '@tanstack/react-router';
 import { cn } from '@/lib/utils';
-import { useSidebarStore } from '#/zustand/sidebarStore/useSidebar.ts';
+import mainRouter from '../Appshell/main_router.ts';
 
 export interface SidebarItemProps {
   item: SidebarItemData
@@ -10,13 +10,9 @@ export interface SidebarItemProps {
 
 export function SidebarItem({ item, collapsed = false }: SidebarItemProps) {
   const Icon = item.icon
-  const activeSidebar = useSidebarStore((state) => state.activeSidebar);
-  // const setActiveSidebar = useSidebarStore((state) => state.setActiveSidebar);
-  // const onClickHandler = (sidebar : String) => {
-  //         setActiveSidebar(sidebar);    
-  // };
+  const path = mainRouter();
+  const activeSidebar = path;
   return (
-    // onClick={() => onClickHandler(item.id)}
     <li>
           <Link
             to={item.href}

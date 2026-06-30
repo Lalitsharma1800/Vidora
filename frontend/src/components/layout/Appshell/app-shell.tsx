@@ -10,12 +10,10 @@ interface AppShellProps {
   children: ReactNode
 }
 import { useSidebarCollapseStore } from '#/zustand/sidebarStore/useSidebarCollapsedState.ts';
-import mainRouter from './main_router.ts';
+
 
 export function AppShell({ children }: AppShellProps) {
 
-  mainRouter();
-  
   const is_collapsed = useSidebarCollapseStore(state => state.isCollapsed);
   return (
     <TooltipProvider delay={300}>
