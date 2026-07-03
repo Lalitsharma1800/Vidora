@@ -8,7 +8,8 @@
     "test": "test",
     "start": "node --watch --env-file=.env src/index.js",
     "seed_create_user": "node --env-file=.env scripts/register_user.js",
-    "seed_create_subscribe": "node --env-file=.env scripts/seed_subscribe.js"
+    "seed_create_subscribe": "node --env-file=.env scripts/seed_subscribe.js",
+    "seed_video_metaData": "node --env-file=.env scripts/seed_video_metaData.js"
   },
   "author": "Lalit Sharma",
   "license": "ISC",
