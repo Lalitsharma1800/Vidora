@@ -15,7 +15,9 @@ import {
         watchHistory
     } from "./../controllers/user.controller.js";
 import {saveInHistory} from "../controllers/watch_history.controller.js";
-import { upload_video,upload_thumbnail, getFeed, getVideo } from "../controllers/video.controller.js";
+import { upload_video, upload_thumbnail} from "../controllers/video.controller.js";
+import { getFeed } from "../controllers/home_feed.controller.js";
+import { getVideo } from "../controllers/watch.controller.js";
 import { getSubscriberCountAndSubscribedStatus } from "../controllers/subscription.controller.js";
 
 const router = Router();
