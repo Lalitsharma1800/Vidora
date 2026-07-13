@@ -1,11 +1,9 @@
 const asyncHandler = (reqHandler) => {
-                                    return (req, res, next) => {
-                                        Promise.resolve(reqHandler(req, res, next))
-                                                .catch((error) => next(error));
-                                    }
-                            }
-export {asyncHandler};
-
+  return (req, res, next) => {
+    Promise.resolve(reqHandler(req, res, next)).catch((error) => next(error));
+  };
+};
+export { asyncHandler };
 
 /**
 reqhandler created & passes to asyncHandler then it passes to middleware Or controller
